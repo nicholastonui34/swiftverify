@@ -1,0 +1,105 @@
+// SwiftVerify database schema.
+// Phase 1: this file is the data contract (landing page runs on lib/content.ts).
+// Phase 2: run `npm i -D prisma && npm i @prisma/client`, set DATABASE_URL,
+//          then `npx prisma migrate dev` and `npx prisma db seed`.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  CLIENT
+  ADMIN
+}
+
+enum OrderStatus {
+  PENDING_PAYMENT
+  PAYMENT_SUBMITTED
+  APPROVED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  role      Role     @default(CLIENT)
+  name      String?
+  country   String?
+  phone     String?
+  orders    Order[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Service {
+  id              String   @id @default(cuid())
+  name            String   @unique
+  slug            String   @unique
+  description     String
+  priceKES        Int
+  isPromoEligible Boolean  @default(true)
+  orders          Order[]
+  createdAt       DateTime @default(now())
+}
+
+model Order {
+  id            String        @id @default(cuid())
+  clientId      String
+  client        User          @relation(fields: [clientId], references: [id])
+  serviceId     String
+  service       Service       @relation(fields: [serviceId], references: [id])
+  status        OrderStatus   @default(PENDING_PAYMENT)
+  priceKES      Int
+  mpesaProofUrl String?
+  mpesaPhone    String?
+  notes         String?
+  promo         PromoTracker?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  approvedAt    DateTime?
+
+  @@index([status])
+  @@index([clientId])
+}
+
+model PromoTracker {
+  id            String   @id @default(cuid())
+  orderId       String   @unique
+  order         Order    @relation(fields: [orderId], references: [id])
+  usedPromoCode Boolean  @default(true)
+  createdAt     DateTime @default(now())
+}
+
+model Testimonial {
+  id         String   @id @default(cuid())
+  authorName String
+  country    String
+  service    String
+  rating     Int
+  review     String
+  photoUrl   String?
+  isActive   Boolean  @default(true)
+  source     String // "TELEGRAM" | "DIRECT"
+  createdAt  DateTime @default(now())
+}
+
+model Subscriber {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  subscribedAt DateTime @default(now())
+}
+
+model Setting {
+  id        String   @id @default(cuid())
+  key       String   @unique // "promo_count", "current_tip", "mpesa_phone", ...
+  value     String // JSON
+  updatedAt DateTime @updatedAt
+}
