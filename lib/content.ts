@@ -14,6 +14,20 @@ export type Service = {
   featured?: boolean;
 };
 
+/** Current promo funnel state (client-safe type; computed in lib/data.ts). */
+export type PromoState = {
+  active: boolean;
+  used: number;
+  limit: number;
+  remaining: number;
+  promoPriceKES: number;
+};
+
+/** Price a service given the current promo state. Pure + client-safe. */
+export function priceFor(service: Service, promo: PromoState): number {
+  return promo.active && service.isPromoEligible ? promo.promoPriceKES : service.priceKES;
+}
+
 export const services: Service[] = [
   {
     slug: "personal-payoneer",

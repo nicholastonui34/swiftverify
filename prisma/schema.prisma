@@ -8,8 +8,11 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  // Pooled connection for the app runtime (Neon/Supabase pooler).
+  url       = env("DATABASE_URL")
+  // Direct connection for migrations. Set to the same URL if you only have one.
+  directUrl = env("DIRECT_URL")
 }
 
 enum Role {
@@ -29,7 +32,7 @@ enum OrderStatus {
 model User {
   id        String   @id @default(cuid())
   email     String   @unique
-  password  String
+  password  String? // null for guest-checkout clients until they set one (Phase 3 auth)
   role      Role     @default(CLIENT)
   name      String?
   country   String?

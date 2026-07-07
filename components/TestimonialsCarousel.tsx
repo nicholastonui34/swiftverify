@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useCallback } from "react";
 import { ChevronLeft, ChevronRight, Star, Quote } from "lucide-react";
-import { testimonials } from "@/lib/content";
+import type { Testimonial } from "@/lib/content";
 import { siteConfig } from "@/lib/config";
 
 function initials(name: string) {
@@ -16,7 +16,11 @@ function initials(name: string) {
     .toUpperCase();
 }
 
-export function TestimonialsCarousel() {
+export function TestimonialsCarousel({
+  testimonials,
+}: {
+  testimonials: Testimonial[];
+}) {
   const [index, setIndex] = useState(0);
   const count = testimonials.length;
 
@@ -30,7 +34,8 @@ export function TestimonialsCarousel() {
     return () => clearInterval(id);
   }, [count]);
 
-  const t = testimonials[index];
+  if (count === 0) return null;
+  const t = testimonials[index % count];
 
   return (
     <section id="testimonials" className="scroll-mt-20 bg-navy-800 py-20 text-white">

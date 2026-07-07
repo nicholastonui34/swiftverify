@@ -1,13 +1,18 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import type { Service } from "@/lib/content";
-import { siteConfig, promoActive } from "@/lib/config";
+import { priceFor, type Service, type PromoState } from "@/lib/content";
 import { formatKES, cn } from "@/lib/utils";
 
-export function ServiceCard({ service }: { service: Service }) {
-  const showPromo = promoActive && service.isPromoEligible;
-  const displayPrice = showPromo ? siteConfig.promoPriceKES : service.priceKES;
-  const struck = showPromo && service.priceKES > siteConfig.promoPriceKES;
+export function ServiceCard({
+  service,
+  promo,
+}: {
+  service: Service;
+  promo: PromoState;
+}) {
+  const showPromo = promo.active && service.isPromoEligible;
+  const displayPrice = priceFor(service, promo);
+  const struck = showPromo && service.priceKES > displayPrice;
 
   return (
     <div
@@ -22,7 +27,7 @@ export function ServiceCard({ service }: { service: Service }) {
         </h3>
         {showPromo && (
           <span className="shrink-0 rounded-full bg-brand-500 px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide text-white">
-            First 10
+            First {promo.limit}
           </span>
         )}
       </div>

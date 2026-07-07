@@ -1,13 +1,12 @@
 import { NextResponse } from "next/server";
+import { db, isDbConfigured } from "@/lib/db";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 /**
- * Newsletter signup.
- *
- * Phase 1: validates and acknowledges (no persistence yet).
- * Phase 2+: insert into the `Subscriber` table via Prisma and send the
- * auto-reply email (Nodemailer) — see prisma/schema.prisma and PHASE plan.
+ * Newsletter signup. Persists to the `Subscriber` table when a database is
+ * configured; otherwise validates and acknowledges (Phase 1 behaviour).
+ * Phase 4 adds the Telegram-tips auto-reply email.
  */
 export async function POST(request: Request) {
   let email = "";
@@ -25,9 +24,22 @@ export async function POST(request: Request) {
     );
   }
 
-  // TODO(Phase 2): persist subscriber + send Telegram tips auto-reply email.
-  console.log(`[subscribe] new subscriber: ${email}`);
+  if (isDbConfigured) {
+    try {
+      await db.subscriber.upsert({
+        where: { email },
+        update: {},
+        create: { email },
+      });
+    } catch (err) {
+      console.error("[subscribe] db error:", err);
+      // Fall through — don't fail the UX over a transient DB issue.
+    }
+  } else {
+    console.log(`[subscribe] new subscriber (no db): ${email}`);
+  }
 
+  // TODO(Phase 4): send Telegram-tips auto-reply email.
   return NextResponse.json({
     message: "You're in! Check your inbox for exclusive Payoneer tips.",
   });

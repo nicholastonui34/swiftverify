@@ -1,9 +1,10 @@
 import Link from "next/link";
 import { ArrowRight, ShieldCheck, Zap, BadgeCheck } from "lucide-react";
-import { siteConfig, promoActive, promoRemaining } from "@/lib/config";
+import { siteConfig } from "@/lib/config";
+import type { PromoState } from "@/lib/content";
 import { formatKES } from "@/lib/utils";
 
-export function Hero() {
+export function Hero({ promo }: { promo: PromoState }) {
   return (
     <section className="relative overflow-hidden bg-white">
       <div className="bg-hero-radial absolute inset-0" aria-hidden />
@@ -44,13 +45,13 @@ export function Hero() {
             </a>
           </div>
 
-          {promoActive && (
+          {promo.active && (
             <p className="mt-5 text-sm font-medium text-navy-600">
-              🎉 First 10 signups this month get everything at{" "}
+              🎉 First {promo.limit} signups this month get everything at{" "}
               <span className="font-bold text-brand-600">
-                {formatKES(siteConfig.promoPriceKES)}
+                {formatKES(promo.promoPriceKES)}
               </span>{" "}
-              — {promoRemaining} spots left.
+              — {promo.remaining} spots left.
             </p>
           )}
         </div>
