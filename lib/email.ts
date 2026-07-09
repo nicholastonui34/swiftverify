@@ -56,3 +56,44 @@ export async function sendPaymentReceived(params: {
     body: `Hi ${params.name},\n\nWe've received your payment proof for order ${params.orderId}. Our team will verify it within 2–24 hours and email you once confirmed.\n\n— ${siteConfig.name}`,
   });
 }
+
+export async function sendOrderApproved(params: {
+  to: string;
+  name: string;
+  orderId: string;
+  serviceName: string;
+}) {
+  await sendEmail({
+    to: params.to,
+    subject: `Payment confirmed — ${params.serviceName}`,
+    body: `Hi ${params.name},\n\nGood news — your payment for order ${params.orderId} (${params.serviceName}) is confirmed. We're starting your verification now and will keep you posted on Telegram/email.\n\n— ${siteConfig.name}`,
+  });
+}
+
+export async function sendOrderRejected(params: {
+  to: string;
+  name: string;
+  orderId: string;
+  reason?: string;
+}) {
+  await sendEmail({
+    to: params.to,
+    subject: `Order ${params.orderId} — action needed`,
+    body: `Hi ${params.name},\n\nWe couldn't confirm the payment for order ${params.orderId}.${
+      params.reason ? `\nReason: ${params.reason}` : ""
+    }\nIf you were charged, reply to this email with your M-PESA transaction code and we'll refund or re-check it right away.\n\n— ${siteConfig.name}`,
+  });
+}
+
+export async function sendOrderCompleted(params: {
+  to: string;
+  name: string;
+  orderId: string;
+  serviceName: string;
+}) {
+  await sendEmail({
+    to: params.to,
+    subject: `Done! ${params.serviceName} is complete`,
+    body: `Hi ${params.name},\n\nYour ${params.serviceName} (order ${params.orderId}) is complete. 🎉\n\nIf we earned it, a quick review means a lot — reply here or send it on Telegram (${siteConfig.telegram}) and we may feature it on the site.\n\nThank you for trusting ${siteConfig.name}.`,
+  });
+}
