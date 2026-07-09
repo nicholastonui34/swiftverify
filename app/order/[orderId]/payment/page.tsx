@@ -64,7 +64,7 @@ export default async function PaymentPage({
             <PaymentPanel
               orderId={order.id}
               amountKES={order.priceKES}
-              merchantPhone={siteConfig.mpesaMerchantPhone}
+              till={siteConfig.mpesaTill}
               merchantName={siteConfig.mpesaMerchantName}
               alreadySubmitted={alreadySubmitted}
             />

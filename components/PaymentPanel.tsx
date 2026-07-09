@@ -19,13 +19,13 @@ const initial: PaymentFormState = {};
 export function PaymentPanel({
   orderId,
   amountKES,
-  merchantPhone,
+  till,
   merchantName,
   alreadySubmitted,
 }: {
   orderId: string;
   amountKES: number;
-  merchantPhone: string;
+  till: string;
   merchantName: string;
   alreadySubmitted: boolean;
 }) {
@@ -34,9 +34,9 @@ export function PaymentPanel({
 
   const done = alreadySubmitted || state.success;
 
-  async function copyNumber() {
+  async function copyTill() {
     try {
-      await navigator.clipboard.writeText(merchantPhone);
+      await navigator.clipboard.writeText(till);
       setCopied(true);
       setTimeout(() => setCopied(false), 1800);
     } catch {
@@ -71,23 +71,27 @@ export function PaymentPanel({
           <h2 className="font-display text-lg font-bold">Pay with M-PESA</h2>
         </div>
         <ol className="mt-4 space-y-2 text-sm text-navy-600">
-          <li>1. Go to M-PESA → Send Money.</li>
+          <li>1. Go to M-PESA → Buy Goods and Services.</li>
           <li>
-            2. Send{" "}
-            <span className="font-semibold text-navy-900">{formatKES(amountKES)}</span> to
-            the number below ({merchantName}).
+            2. Enter Till Number{" "}
+            <span className="font-semibold text-navy-900">{till}</span> ({merchantName}).
           </li>
-          <li>3. Upload the confirmation SMS/screenshot here.</li>
+          <li>
+            3. Enter amount{" "}
+            <span className="font-semibold text-navy-900">{formatKES(amountKES)}</span> and
+            confirm.
+          </li>
+          <li>4. Upload the confirmation SMS/screenshot here.</li>
         </ol>
 
         <div className="mt-4 flex items-center justify-between rounded-xl bg-navy-800 px-4 py-3 text-white">
           <div>
-            <p className="text-xs text-navy-100">{merchantName}</p>
-            <p className="font-display text-xl font-bold tracking-wide">{merchantPhone}</p>
+            <p className="text-xs text-navy-100">Buy Goods · Till Number · {merchantName}</p>
+            <p className="font-display text-xl font-bold tracking-wide">{till}</p>
           </div>
           <button
             type="button"
-            onClick={copyNumber}
+            onClick={copyTill}
             className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-2 text-sm font-medium transition-colors hover:bg-white/20"
           >
             {copied ? <Check className="h-4 w-4 text-brand-300" /> : <Copy className="h-4 w-4" />}

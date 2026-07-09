@@ -22,8 +22,8 @@ export const siteConfig = {
   telegram: "https://t.me/swiftverifydotcom",
   supportEmail: "support@swiftverify.co.ke",
 
-  // M-PESA (configurable in admin Settings in Phase 3)
-  mpesaMerchantPhone: "0725830334",
+  // M-PESA Buy Goods / Till (configurable in admin Settings in Phase 3)
+  mpesaTill: "3561312",
   mpesaMerchantName: "NICHOLAS TONUI",
 
   // Promo funnel: first N clients get the promo price
