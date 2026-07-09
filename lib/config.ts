@@ -22,9 +22,9 @@ export const siteConfig = {
   telegram: "https://t.me/swiftverifydotcom",
   supportEmail: "support@swiftverify.co.ke",
 
-  // M-PESA (placeholder — configurable in admin Settings in Phase 3)
-  mpesaMerchantPhone: "0722000000",
-  mpesaMerchantName: "SwiftVerify",
+  // M-PESA (configurable in admin Settings in Phase 3)
+  mpesaMerchantPhone: "0725830334",
+  mpesaMerchantName: "NICHOLAS TONUI",
 
   // Promo funnel: first N clients get the promo price
   promoLimit: 10,
