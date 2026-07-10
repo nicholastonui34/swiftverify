@@ -5,6 +5,7 @@ import { Loader2, AlertCircle, ArrowRight } from "lucide-react";
 import { priceFor, type Service, type PromoState } from "@/lib/content";
 import { formatKES } from "@/lib/utils";
 import { createOrder, type OrderFormState } from "@/app/order/actions";
+import { Honeypot } from "@/components/Honeypot";
 
 const initial: OrderFormState = {};
 
@@ -30,6 +31,7 @@ export function OrderForm({
 
   return (
     <form action={formAction} className="space-y-6">
+      <Honeypot />
       {/* Service selection */}
       <div>
         <label className="block text-sm font-semibold text-navy-800">Service</label>

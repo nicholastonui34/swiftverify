@@ -3,6 +3,7 @@
 import { useState, type FormEvent } from "react";
 import { Loader2, CheckCircle2, Send } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { HONEYPOT_FIELD } from "@/lib/honeypot";
 
 type Status = "idle" | "loading" | "success" | "error";
 
@@ -14,6 +15,7 @@ export function Newsletter({
   className?: string;
 }) {
   const [email, setEmail] = useState("");
+  const [botField, setBotField] = useState("");
   const [status, setStatus] = useState<Status>("idle");
   const [message, setMessage] = useState("");
 
@@ -25,7 +27,7 @@ export function Newsletter({
       const res = await fetch("/api/subscribe", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email, [HONEYPOT_FIELD]: botField }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Something went wrong");
@@ -57,6 +59,16 @@ export function Newsletter({
 
   return (
     <form onSubmit={onSubmit} className={cn("w-full", className)}>
+      <input
+        type="text"
+        name={HONEYPOT_FIELD}
+        value={botField}
+        onChange={(e) => setBotField(e.target.value)}
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden="true"
+        style={{ position: "absolute", left: "-9999px", width: 1, height: 1, overflow: "hidden" }}
+      />
       <div className="flex flex-col gap-2 sm:flex-row">
         <input
           type="email"

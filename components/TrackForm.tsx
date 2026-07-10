@@ -3,6 +3,7 @@
 import { useActionState } from "react";
 import { Loader2, AlertCircle, Search } from "lucide-react";
 import { trackOrder, type TrackState } from "@/app/track/actions";
+import { Honeypot } from "@/components/Honeypot";
 
 const initial: TrackState = {};
 
@@ -11,6 +12,7 @@ export function TrackForm() {
 
   return (
     <form action={formAction} className="space-y-4">
+      <Honeypot />
       <div>
         <label htmlFor="orderId" className="block text-sm font-semibold text-navy-800">
           Order ID
