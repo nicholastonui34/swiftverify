@@ -148,6 +148,48 @@ export const tips: string[] = [
   "📢 Getting your Payoneer flagged in Kenya? It's usually a document-format issue. We fix that.",
 ];
 
+/** Frequently asked questions — rendered on the landing FAQ section, the /faq
+ *  page, and emitted as FAQPage JSON-LD for rich search results. */
+export type Faq = { question: string; answer: string };
+
+export const faqs: Faq[] = [
+  {
+    question: "Is SwiftVerify affiliated with Payoneer?",
+    answer:
+      "No. We're an independent verification and document-formatting service. We help you prepare and submit the right documents so your own Payoneer account passes KYC — we never ask for your Payoneer password.",
+  },
+  {
+    question: "How long does verification take?",
+    answer:
+      "Most document formatting is delivered within a few hours. Full account verification depends on Payoneer's review, but correctly formatted documents typically pass within 24–72 hours instead of being repeatedly rejected.",
+  },
+  {
+    question: "How do I pay?",
+    answer:
+      "Payment is via M-PESA Buy Goods (Till number shown at checkout). After paying, you upload your M-PESA confirmation and our team verifies it manually — no risky card details or third-party payment APIs.",
+  },
+  {
+    question: "What if my account still isn't verified?",
+    answer:
+      "We work with you until your documents are accepted. If we genuinely can't help with your case, contact us about our refund policy — we don't want your money for a service we couldn't deliver.",
+  },
+  {
+    question: "Which countries do you support?",
+    answer:
+      "We focus on East Africa — Kenya, Tanzania, Uganda and neighbouring countries — but our document-formatting help works for freelancers and sellers anywhere Payoneer operates.",
+  },
+  {
+    question: "Can you set up US, UK or Canada receiving accounts?",
+    answer:
+      "Yes. Our receiving-accounts service helps you set up global receiving accounts so platforms like Upwork, Etsy, eBay and direct clients can pay you by local bank transfer.",
+  },
+  {
+    question: "Is my personal information safe?",
+    answer:
+      "Your documents are used only to prepare your verification and are handled by our team directly. We never post your details publicly and never share them with third parties.",
+  },
+];
+
 export const howItWorks = [
   {
     step: 1,

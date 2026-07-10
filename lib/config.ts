@@ -10,7 +10,7 @@ export const siteConfig = {
   tagline: "Get Your Payoneer Account Verified. Fast. Compliant.",
   description:
     "SwiftVerify helps East African freelancers and sellers get their Payoneer accounts verified and set up US/UK/Canada receiving accounts. 99% success rate.",
-  url: "https://swiftverify.vercel.app",
+  url: "https://swiftverify-alpha.vercel.app",
 
   // Social proof
   sellersVerified: 470,

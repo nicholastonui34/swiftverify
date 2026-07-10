@@ -7,10 +7,10 @@ import { Logo } from "./Logo";
 import { siteConfig } from "@/lib/config";
 
 const navLinks = [
-  { href: "#services", label: "Services" },
-  { href: "#how-it-works", label: "How it works" },
-  { href: "#testimonials", label: "Reviews" },
-  { href: "#tips", label: "Tips" },
+  { href: "/#services", label: "Services" },
+  { href: "/#how-it-works", label: "How it works" },
+  { href: "/#testimonials", label: "Reviews" },
+  { href: "/#faq", label: "FAQ" },
 ];
 
 export function Navbar() {

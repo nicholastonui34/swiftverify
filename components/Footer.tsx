@@ -9,15 +9,15 @@ const columns = [
     title: "Company",
     links: [
       { label: "Home", href: "/" },
-      { label: "Services", href: "#services" },
-      { label: "How it works", href: "#how-it-works" },
-      { label: "Reviews", href: "#testimonials" },
+      { label: "Services", href: "/#services" },
+      { label: "How it works", href: "/#how-it-works" },
+      { label: "Reviews", href: "/#testimonials" },
     ],
   },
   {
     title: "Support",
     links: [
-      { label: "FAQ", href: "#tips" },
+      { label: "FAQ", href: "/faq" },
       { label: "Contact", href: siteConfig.telegram },
       { label: "Place an order", href: "/order" },
       { label: "Track my order", href: "/track" },
