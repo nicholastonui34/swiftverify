@@ -20,6 +20,7 @@ const columns = [
       { label: "FAQ", href: "#tips" },
       { label: "Contact", href: siteConfig.telegram },
       { label: "Place an order", href: "/order" },
+      { label: "Track my order", href: "/track" },
     ],
   },
   {

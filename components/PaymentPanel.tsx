@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState, useState } from "react";
+import Link from "next/link";
 import {
   Copy,
   Check,
@@ -58,6 +59,14 @@ export function PaymentPanel({
         <p className="mt-4 inline-flex items-center gap-2 rounded-full bg-white px-3 py-1 text-xs font-medium text-navy-500">
           <Clock className="h-3.5 w-3.5" /> Status: awaiting admin approval
         </p>
+        <div className="mt-5">
+          <Link
+            href={`/order/${orderId}/status`}
+            className="inline-flex items-center gap-2 rounded-full bg-navy-800 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-navy-700"
+          >
+            Track your order
+          </Link>
+        </div>
       </div>
     );
   }

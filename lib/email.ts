@@ -127,7 +127,8 @@ export async function sendPaymentReceived(params: {
   await sendEmail({
     to: params.to,
     subject: `Payment received — order ${params.orderId}`,
-    body: `Hi ${params.name},\n\nWe've received your payment proof for order ${params.orderId}. Our team will verify it within 2–24 hours and email you once confirmed.\n\n— ${siteConfig.name}`,
+    body: `Hi ${params.name},\n\nWe've received your payment proof for order ${params.orderId}. Our team will verify it within 2–24 hours and email you once confirmed.\n\nYou can follow your order status any time using the button below.\n\n— ${siteConfig.name}`,
+    cta: { label: "Track your order", url: `${BASE_URL}/order/${params.orderId}/status` },
   });
 }
 
