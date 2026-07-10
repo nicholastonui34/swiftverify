@@ -68,6 +68,38 @@ export function SettingsForm({ initial }: { initial: SiteSettings }) {
         </label>
       </Section>
 
+      <Section
+        title="Notifications"
+        desc="Client emails (Nodemailer) and admin Telegram pings on new orders & payment proofs. Secrets (Gmail app password, bot token) live in env vars, not here."
+      >
+        <label className="flex items-center gap-2 text-sm text-navy-700">
+          <input
+            type="checkbox"
+            checked={form.emailNotifications}
+            onChange={(e) => set("emailNotifications", e.target.checked)}
+            className="h-4 w-4 rounded border-navy-300 text-brand-500 focus:ring-brand-500"
+          />
+          Send client emails
+        </label>
+        <label className="flex items-center gap-2 text-sm text-navy-700">
+          <input
+            type="checkbox"
+            checked={form.telegramNotifications}
+            onChange={(e) => set("telegramNotifications", e.target.checked)}
+            className="h-4 w-4 rounded border-navy-300 text-brand-500 focus:ring-brand-500"
+          />
+          Send admin Telegram pings
+        </label>
+        <Field label="Telegram admin chat ID (falls back to env)" full>
+          <input
+            value={form.telegramChatId}
+            onChange={(e) => set("telegramChatId", e.target.value)}
+            placeholder="e.g. 123456789"
+            className={inputCls}
+          />
+        </Field>
+      </Section>
+
       <Section title="Site copy">
         <Field label="Company tagline" full>
           <input

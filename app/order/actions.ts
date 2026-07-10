@@ -9,6 +9,8 @@ import {
   sendPaymentReceived,
   sendPaymentSubmittedToAdmin,
 } from "@/lib/email";
+import { notifyTelegram, tgEscape } from "@/lib/telegram";
+import { formatKES } from "@/lib/utils";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const MAX_RECEIPT_BYTES = 4 * 1024 * 1024; // 4 MB
@@ -66,6 +68,12 @@ export async function createOrder(
     serviceName: service.name,
     priceKES,
   });
+
+  await notifyTelegram(
+    `🆕 <b>New order</b>\n${tgEscape(name)} — ${tgEscape(service.name)}\n${formatKES(
+      priceKES
+    )}${usedPromo ? " (promo)" : ""}\nOrder #${order.id.slice(-8)}`
+  );
 
   redirect(`/order/${order.id}/payment`);
 }
@@ -125,6 +133,13 @@ export async function submitPayment(
       serviceName: order.service.name,
       mpesaPhone,
     }),
+    notifyTelegram(
+      `💰 <b>Payment proof submitted</b>\n${tgEscape(
+        order.client.name ?? order.client.email
+      )} — ${tgEscape(order.service.name)}\nFrom ${tgEscape(
+        mpesaPhone
+      )}\nReview order #${order.id.slice(-8)}`
+    ),
   ]);
 
   revalidatePath(`/order/${orderId}/payment`);

@@ -17,6 +17,10 @@ export type SiteSettings = {
   tagline: string;
   currentTip: string;
   promoActive: boolean;
+  // Phase 4 — notifications
+  emailNotifications: boolean;
+  telegramNotifications: boolean;
+  telegramChatId: string;
 };
 
 export const SETTING_KEYS: (keyof SiteSettings)[] = [
@@ -26,6 +30,9 @@ export const SETTING_KEYS: (keyof SiteSettings)[] = [
   "tagline",
   "currentTip",
   "promoActive",
+  "emailNotifications",
+  "telegramNotifications",
+  "telegramChatId",
 ];
 
 function defaults(): SiteSettings {
@@ -36,6 +43,9 @@ function defaults(): SiteSettings {
     tagline: siteConfig.tagline,
     currentTip: "",
     promoActive: true,
+    emailNotifications: true,
+    telegramNotifications: true,
+    telegramChatId: "",
   };
 }
 
