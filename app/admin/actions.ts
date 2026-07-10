@@ -113,6 +113,42 @@ export async function saveOrderNotes(orderId: string, notes: string): Promise<Ac
   return { ok: true, message: "Notes saved." };
 }
 
+/**
+ * Bulk-approve the selected orders. Bound directly to a <form>, so it receives
+ * FormData with repeated `ids` fields. Only PAYMENT_SUBMITTED orders are
+ * affected; each approved order emails its client.
+ */
+export async function bulkApproveOrders(formData: FormData): Promise<void> {
+  await requireAdmin();
+  const ids = formData.getAll("ids").map(String).filter(Boolean);
+  if (ids.length === 0) return;
+
+  const orders = await db.order.findMany({
+    where: { id: { in: ids }, status: "PAYMENT_SUBMITTED" },
+    include: { client: true, service: true },
+  });
+  if (orders.length === 0) return;
+
+  await db.order.updateMany({
+    where: { id: { in: orders.map((o) => o.id) } },
+    data: { status: "APPROVED", approvedAt: new Date() },
+  });
+
+  await Promise.all(
+    orders.map((o) =>
+      sendOrderApproved({
+        to: o.client.email,
+        name: o.client.name ?? "there",
+        orderId: o.id,
+        serviceName: o.service.name,
+      })
+    )
+  );
+
+  revalidatePath("/admin/orders");
+  revalidatePath("/admin");
+}
+
 // ---- Promo ----------------------------------------------------------------
 
 export async function resetPromo(): Promise<ActionResult> {

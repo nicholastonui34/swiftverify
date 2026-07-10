@@ -66,9 +66,32 @@ const PAGE_SIZE = 20;
 export async function getOrders(opts: {
   status?: OrderStatus;
   page?: number;
+  query?: string;
 }): Promise<{ orders: OrderWithRelations[]; total: number; page: number; pageSize: number }> {
   const page = Math.max(1, opts.page ?? 1);
-  const where: Prisma.OrderWhereInput = opts.status ? { status: opts.status } : {};
+  const where: Prisma.OrderWhereInput = {};
+  if (opts.status) where.status = opts.status;
+
+  const q = opts.query?.trim();
+  if (q) {
+    // Match order id (full or short suffix), M-PESA phone, or client name/email/phone.
+    where.OR = [
+      { id: { endsWith: q } },
+      { mpesaPhone: { contains: q, mode: "insensitive" } },
+      {
+        client: {
+          is: {
+            OR: [
+              { email: { contains: q, mode: "insensitive" } },
+              { name: { contains: q, mode: "insensitive" } },
+              { phone: { contains: q, mode: "insensitive" } },
+            ],
+          },
+        },
+      },
+    ];
+  }
+
   const [orders, total] = await Promise.all([
     db.order.findMany({
       where,
@@ -161,4 +184,27 @@ export async function getPromoData(): Promise<{
     }),
   ]);
   return { used, limit: siteConfig.promoLimit, orders };
+}
+
+export type ServiceRevenue = { service: string; revenueKES: number; orders: number };
+
+/** Realised revenue + order count grouped by service (analytics breakdown). */
+export async function getRevenueByService(): Promise<ServiceRevenue[]> {
+  const [grouped, services] = await Promise.all([
+    db.order.groupBy({
+      by: ["serviceId"],
+      where: { status: { in: REVENUE_STATUSES } },
+      _sum: { priceKES: true },
+      _count: { _all: true },
+    }),
+    db.service.findMany({ select: { id: true, name: true } }),
+  ]);
+  const nameById = new Map(services.map((s) => [s.id, s.name]));
+  return grouped
+    .map((g) => ({
+      service: nameById.get(g.serviceId) ?? "Unknown",
+      revenueKES: g._sum.priceKES ?? 0,
+      orders: g._count._all,
+    }))
+    .sort((a, b) => b.revenueKES - a.revenueKES);
 }
