@@ -10,8 +10,8 @@ const columns = [
     links: [
       { label: "Home", href: "/" },
       { label: "Services", href: "/#services" },
+      { label: "Guides", href: "/guides" },
       { label: "How it works", href: "/#how-it-works" },
-      { label: "Reviews", href: "/#testimonials" },
     ],
   },
   {
