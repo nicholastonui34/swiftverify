@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { siteConfig } from "@/lib/config";
+import { siteUrl } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: {
@@ -8,13 +9,28 @@ export const metadata: Metadata = {
     template: `%s — ${siteConfig.name}`,
   },
   description: siteConfig.description,
-  metadataBase: new URL(siteConfig.url),
+  metadataBase: new URL(siteUrl),
+  alternates: { canonical: "/" },
+  keywords: [
+    "Payoneer verification",
+    "Payoneer Kenya",
+    "Payoneer account setup",
+    "US receiving account",
+    "freelancer payments East Africa",
+    "M-PESA Payoneer",
+  ],
   openGraph: {
     title: `${siteConfig.name} — Payoneer Verification`,
     description: siteConfig.description,
-    url: siteConfig.url,
+    url: siteUrl,
     siteName: siteConfig.name,
+    locale: "en_KE",
     type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `${siteConfig.name} — Payoneer Verification`,
+    description: siteConfig.description,
   },
   icons: { icon: "/logo-mark.svg" },
 };

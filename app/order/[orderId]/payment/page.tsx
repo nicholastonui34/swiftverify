@@ -7,7 +7,7 @@ import { Footer } from "@/components/Footer";
 import { FloatingButtons } from "@/components/FloatingButtons";
 import { PaymentPanel } from "@/components/PaymentPanel";
 import { db, isDbConfigured } from "@/lib/db";
-import { siteConfig } from "@/lib/config";
+import { getSettings } from "@/lib/settings";
 import { formatKES } from "@/lib/utils";
 
 export const metadata: Metadata = { title: "Payment" };
@@ -21,10 +21,13 @@ export default async function PaymentPage({
   const { orderId } = await params;
   if (!isDbConfigured) notFound();
 
-  const order = await db.order.findUnique({
-    where: { id: orderId },
-    include: { service: true, client: true },
-  });
+  const [order, settings] = await Promise.all([
+    db.order.findUnique({
+      where: { id: orderId },
+      include: { service: true, client: true },
+    }),
+    getSettings(),
+  ]);
   if (!order) notFound();
 
   const alreadySubmitted = order.status !== "PENDING_PAYMENT";
@@ -64,8 +67,8 @@ export default async function PaymentPage({
             <PaymentPanel
               orderId={order.id}
               amountKES={order.priceKES}
-              till={siteConfig.mpesaTill}
-              merchantName={siteConfig.mpesaMerchantName}
+              till={settings.mpesaTill}
+              merchantName={settings.mpesaMerchantName}
               alreadySubmitted={alreadySubmitted}
             />
           </div>

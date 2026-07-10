@@ -1,4 +1,5 @@
 import "server-only";
+import type { OrderStatus } from "@prisma/client";
 import { db, isDbConfigured } from "./db";
 import { siteConfig } from "./config";
 import {
@@ -95,5 +96,73 @@ export async function getPromoState(): Promise<PromoState> {
       remaining: Math.max(limit - used, 0),
       promoPriceKES,
     };
+  }
+}
+
+/**
+ * Client-safe view of an order for the public tracking page. Deliberately omits
+ * PII (email, phone, payment proof) — the order id acts as an unguessable
+ * receipt token, so anyone with the link sees only status + summary.
+ */
+export type OrderStatusView = {
+  id: string;
+  firstName: string | null;
+  serviceName: string;
+  priceKES: number;
+  status: OrderStatus;
+  hasProof: boolean;
+  createdAt: Date;
+  approvedAt: Date | null;
+};
+
+export async function getOrderStatus(orderId: string): Promise<OrderStatusView | null> {
+  if (!isDbConfigured) return null;
+  try {
+    const order = await db.order.findUnique({
+      where: { id: orderId },
+      include: { client: true, service: true },
+    });
+    if (!order) return null;
+    return {
+      id: order.id,
+      firstName: order.client.name?.trim().split(/\s+/)[0] ?? null,
+      serviceName: order.service.name,
+      priceKES: order.priceKES,
+      status: order.status,
+      hasProof: Boolean(order.mpesaProofUrl),
+      createdAt: order.createdAt,
+      approvedAt: order.approvedAt,
+    };
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Look up an order by id + email (case-insensitive). Used by the /track form to
+ * confirm the requester owns the order before revealing its status link.
+ * Accepts either the full order id (from the confirmation email) or the short
+ * 8-char id shown in the UI. The email match scopes the suffix lookup so it
+ * can't leak another client's order.
+ */
+export async function findOrderIdByIdAndEmail(
+  orderIdInput: string,
+  email: string
+): Promise<string | null> {
+  if (!isDbConfigured) return null;
+  const id = orderIdInput.trim();
+  const emailNorm = email.trim().toLowerCase();
+  if (id.length < 6 || !emailNorm) return null;
+  try {
+    const order = await db.order.findFirst({
+      where: {
+        OR: [{ id }, { id: { endsWith: id } }],
+        client: { email: emailNorm },
+      },
+      select: { id: true },
+    });
+    return order?.id ?? null;
+  } catch {
+    return null;
   }
 }

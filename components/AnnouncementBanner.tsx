@@ -1,10 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { tips } from "@/lib/content";
+import { tips as defaultTips } from "@/lib/content";
 
-/** Top ad banner that rotates through tips every 5 seconds. */
-export function AnnouncementBanner() {
+/**
+ * Top ad banner that rotates through tips every 5 seconds. The tip list can be
+ * overridden from the DB (admin Settings → "current banner tip"); falls back to
+ * the static tips when no prop is passed.
+ */
+export function AnnouncementBanner({ tips = defaultTips }: { tips?: string[] }) {
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
@@ -13,7 +17,7 @@ export function AnnouncementBanner() {
       setIndex((i) => (i + 1) % tips.length);
     }, 5000);
     return () => clearInterval(id);
-  }, []);
+  }, [tips.length]);
 
   return (
     <div className="bg-navy-800 text-white">

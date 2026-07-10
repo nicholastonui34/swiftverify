@@ -9,7 +9,12 @@ import { isDbConfigured } from "@/lib/db";
 import { getServices, getPromoState } from "@/lib/data";
 import { siteConfig } from "@/lib/config";
 
-export const metadata: Metadata = { title: "Place an Order" };
+export const metadata: Metadata = {
+  title: "Place an Order",
+  description:
+    "Order Payoneer account verification, document formatting or a US/UK/Canada receiving account. Pay securely via M-PESA.",
+  alternates: { canonical: "/order" },
+};
 export const dynamic = "force-dynamic";
 
 export default async function OrderPage({

@@ -9,6 +9,10 @@ import {
   sendPaymentReceived,
   sendPaymentSubmittedToAdmin,
 } from "@/lib/email";
+import { notifyTelegram, tgEscape } from "@/lib/telegram";
+import { formatKES } from "@/lib/utils";
+import { rateLimitByIp } from "@/lib/security";
+import { HONEYPOT_FIELD, isHoneypotTripped } from "@/lib/honeypot";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const MAX_RECEIPT_BYTES = 4 * 1024 * 1024; // 4 MB
@@ -20,6 +24,15 @@ export async function createOrder(
   _prev: OrderFormState,
   formData: FormData
 ): Promise<OrderFormState> {
+  // Bot / abuse guards first — cheap, before any DB work.
+  if (isHoneypotTripped(formData.get(HONEYPOT_FIELD))) {
+    return { error: "Something went wrong. Please try again." };
+  }
+  const rl = await rateLimitByIp("order", 5, 3600);
+  if (!rl.success) {
+    return { error: "Too many orders from this connection. Please try again in a little while." };
+  }
+
   const name = String(formData.get("name") ?? "").trim();
   const email = String(formData.get("email") ?? "").trim().toLowerCase();
   const phone = String(formData.get("phone") ?? "").trim();
@@ -67,6 +80,12 @@ export async function createOrder(
     priceKES,
   });
 
+  await notifyTelegram(
+    `🆕 <b>New order</b>\n${tgEscape(name)} — ${tgEscape(service.name)}\n${formatKES(
+      priceKES
+    )}${usedPromo ? " (promo)" : ""}\nOrder #${order.id.slice(-8)}`
+  );
+
   redirect(`/order/${order.id}/payment`);
 }
 
@@ -76,6 +95,11 @@ export async function submitPayment(
   _prev: PaymentFormState,
   formData: FormData
 ): Promise<PaymentFormState> {
+  const rl = await rateLimitByIp("payment", 15, 3600);
+  if (!rl.success) {
+    return { error: "Too many attempts. Please wait a moment and try again." };
+  }
+
   const orderId = String(formData.get("orderId") ?? "");
   const mpesaPhone = String(formData.get("mpesaPhone") ?? "").trim();
   const file = formData.get("receipt");
@@ -125,6 +149,13 @@ export async function submitPayment(
       serviceName: order.service.name,
       mpesaPhone,
     }),
+    notifyTelegram(
+      `💰 <b>Payment proof submitted</b>\n${tgEscape(
+        order.client.name ?? order.client.email
+      )} — ${tgEscape(order.service.name)}\nFrom ${tgEscape(
+        mpesaPhone
+      )}\nReview order #${order.id.slice(-8)}`
+    ),
   ]);
 
   revalidatePath(`/order/${orderId}/payment`);
