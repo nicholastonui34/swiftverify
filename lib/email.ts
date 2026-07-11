@@ -98,7 +98,7 @@ export async function sendOrderConfirmation(params: {
     subject: `Order received — ${params.serviceName}`,
     body: `Hi ${params.name},\n\nWe've received your order ${params.orderId} for ${params.serviceName} (KES ${params.priceKES.toLocaleString(
       "en-KE"
-    )}).\n\nNext: send the M-PESA payment and upload your receipt. Our team verifies within 2–24 hours.\n\n— ${siteConfig.name}`,
+    )}).\n\nNext: send payment via M-PESA, USDT (TRC20) or Binance Pay and upload your receipt. Our team verifies within 2–24 hours.\n\n— ${siteConfig.name}`,
     cta: { label: "Complete payment", url: `${BASE_URL}/order/${params.orderId}/payment` },
   });
 }
@@ -114,7 +114,7 @@ export async function sendPaymentSubmittedToAdmin(params: {
     to: await adminRecipient(),
     replyTo: params.clientEmail,
     subject: `New payment proof — order ${params.orderId}`,
-    body: `${params.clientName} (${params.clientEmail}) submitted M-PESA proof for ${params.serviceName}.\nSender phone: ${params.mpesaPhone}\nReview & approve in the admin dashboard.`,
+    body: `${params.clientName} (${params.clientEmail}) submitted payment proof for ${params.serviceName}.\nPayment reference: ${params.mpesaPhone}\nReview & approve in the admin dashboard.`,
     cta: { label: "Open in admin", url: `${BASE_URL}/admin/orders/${params.orderId}` },
   });
 }

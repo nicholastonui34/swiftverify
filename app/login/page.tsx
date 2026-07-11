@@ -6,7 +6,7 @@ import { auth } from "@/auth";
 import { Logo } from "@/components/Logo";
 import { LoginForm } from "@/components/LoginForm";
 
-export const metadata: Metadata = { title: "Admin sign in", robots: { index: false } };
+export const metadata: Metadata = { title: "Sign in", robots: { index: false } };
 
 export default async function LoginPage({
   searchParams,
@@ -31,8 +31,10 @@ export default async function LoginPage({
         <div className="rounded-2xl border border-navy-100 bg-white p-8 shadow-card">
           <div className="flex flex-col items-center text-center">
             <Logo />
-            <h1 className="mt-6 font-display text-2xl font-bold text-navy-900">Admin sign in</h1>
-            <p className="mt-1 text-sm text-navy-500">Staff access only.</p>
+            <h1 className="mt-6 font-display text-2xl font-bold text-navy-900">Sign in</h1>
+            <p className="mt-1 text-sm text-navy-500">
+              Use the account you created when placing an order.
+            </p>
           </div>
 
           <div className="mt-8">
@@ -46,9 +48,9 @@ export default async function LoginPage({
         </p>
 
         <p className="mt-3 text-center text-sm text-navy-500">
-          Looking for your orders?{" "}
-          <Link href="/account/login" className="font-semibold text-brand-600 hover:underline">
-            Client sign in
+          Looking for an order?{" "}
+          <Link href="/track" className="font-semibold text-brand-600 hover:underline">
+            Track without signing in
           </Link>
         </p>
       </div>

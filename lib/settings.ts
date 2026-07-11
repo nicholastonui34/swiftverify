@@ -13,6 +13,8 @@ import { siteConfig } from "./config";
 export type SiteSettings = {
   mpesaTill: string;
   mpesaMerchantName: string;
+  usdtTrc20Address: string;
+  binancePayId: string;
   adminEmail: string;
   tagline: string;
   currentTip: string;
@@ -26,6 +28,8 @@ export type SiteSettings = {
 export const SETTING_KEYS: (keyof SiteSettings)[] = [
   "mpesaTill",
   "mpesaMerchantName",
+  "usdtTrc20Address",
+  "binancePayId",
   "adminEmail",
   "tagline",
   "currentTip",
@@ -39,6 +43,8 @@ function defaults(): SiteSettings {
   return {
     mpesaTill: siteConfig.mpesaTill,
     mpesaMerchantName: siteConfig.mpesaMerchantName,
+    usdtTrc20Address: siteConfig.usdtTrc20Address,
+    binancePayId: siteConfig.binancePayId,
     adminEmail: siteConfig.supportEmail,
     tagline: siteConfig.tagline,
     currentTip: "",
