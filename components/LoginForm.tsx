@@ -6,7 +6,7 @@ import { login, type LoginState } from "@/app/login/actions";
 
 const initial: LoginState = {};
 
-export function LoginForm() {
+export function LoginForm({ defaultEmail }: { defaultEmail?: string }) {
   const [state, formAction, pending] = useActionState(login, initial);
 
   return (
@@ -22,6 +22,7 @@ export function LoginForm() {
           required
           autoComplete="username"
           placeholder="you@example.com"
+          defaultValue={defaultEmail}
           className="mt-2 w-full rounded-xl border border-navy-200 bg-white px-4 py-3 text-navy-900 outline-none placeholder-navy-400 focus:border-brand-400 focus:ring-2 focus:ring-brand-500/20"
         />
       </div>

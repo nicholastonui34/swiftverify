@@ -8,9 +8,15 @@ import { LoginForm } from "@/components/LoginForm";
 
 export const metadata: Metadata = { title: "Admin sign in", robots: { index: false } };
 
-export default async function LoginPage() {
+export default async function LoginPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ email?: string }>;
+}) {
   const session = await auth();
-  if (session?.user?.role === "ADMIN") redirect("/admin");
+  const role = session?.user?.role;
+  if (role === "ADMIN" || role === "SUPER_ADMIN") redirect("/admin");
+  const { email } = await searchParams;
 
   return (
     <main className="flex min-h-screen flex-col bg-navy-50/40">
@@ -32,7 +38,7 @@ export default async function LoginPage() {
           </div>
 
           <div className="mt-8">
-            <LoginForm />
+            <LoginForm defaultEmail={email} />
           </div>
         </div>
 
