@@ -76,7 +76,14 @@ export default async function OrderStatusPage({
             <OrderTimeline status={order.status} />
           </div>
 
-          <p className="mt-6 text-center text-xs text-navy-500">
+          <p className="mt-6 text-center text-sm text-navy-600">
+            Want to see every order in one place?{" "}
+            <Link href="/login" className="font-semibold text-brand-600 hover:underline">
+              Sign in to your account
+            </Link>
+          </p>
+
+          <p className="mt-3 text-center text-xs text-navy-500">
             Questions about your order? Reach us on{" "}
             <a
               href={siteConfig.telegram}
