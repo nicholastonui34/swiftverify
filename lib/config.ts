@@ -18,7 +18,7 @@ export const siteConfig = {
   successRate: 99,
 
   // Contact / community
-  whatsapp: "https://wa.me/254722000000",
+  whatsapp: "https://wa.me/447916624874",
   telegram: "https://t.me/swiftverifydotcom",
   supportEmail: "support@swiftverify.co.ke",
 
