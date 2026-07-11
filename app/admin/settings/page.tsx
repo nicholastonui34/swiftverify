@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { redirect } from "next/navigation";
+import { auth } from "@/auth";
 import { getSettings } from "@/lib/settings";
 import { SettingsForm } from "@/components/admin/SettingsForm";
 
@@ -6,6 +8,8 @@ export const metadata: Metadata = { title: "Settings" };
 export const dynamic = "force-dynamic";
 
 export default async function SettingsPage() {
+  const session = await auth();
+  if (session?.user?.role !== "SUPER_ADMIN") redirect("/admin");
   const settings = await getSettings();
 
   return (

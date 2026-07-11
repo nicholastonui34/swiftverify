@@ -35,7 +35,7 @@ export const authConfig = {
       const { pathname } = request.nextUrl;
       const isAdminArea = pathname.startsWith("/admin");
       if (isAdminArea) {
-        return auth?.user?.role === "ADMIN";
+        return auth?.user?.role === "ADMIN" || auth?.user?.role === "SUPER_ADMIN";
       }
       return true;
     },

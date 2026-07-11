@@ -49,6 +49,23 @@ export async function getDashboardMetrics(): Promise<DashboardMetrics> {
   };
 }
 
+export type AdminUser = {
+  id: string;
+  email: string;
+  name: string | null;
+  role: "ADMIN" | "SUPER_ADMIN";
+  createdAt: Date;
+};
+
+export async function getAdmins(): Promise<AdminUser[]> {
+  const rows = await db.user.findMany({
+    where: { role: { in: ["ADMIN", "SUPER_ADMIN"] } },
+    select: { id: true, email: true, name: true, role: true, createdAt: true },
+    orderBy: [{ role: "asc" }, { createdAt: "asc" }],
+  });
+  return rows as AdminUser[];
+}
+
 export type OrderWithRelations = Prisma.OrderGetPayload<{
   include: { client: true; service: true; promo: true };
 }>;

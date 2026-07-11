@@ -10,6 +10,7 @@ import {
   MessageSquareQuote,
   BarChart3,
   Settings,
+  Users,
   LogOut,
   Menu,
   X,
@@ -17,26 +18,40 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-const links = [
+type NavLink = {
+  href: string;
+  label: string;
+  icon: typeof LayoutDashboard;
+  exact?: boolean;
+};
+
+const baseLinks: NavLink[] = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard, exact: true },
   { href: "/admin/orders", label: "Orders", icon: ShoppingCart },
   { href: "/admin/promo", label: "Promo", icon: Ticket },
   { href: "/admin/testimonials", label: "Testimonials", icon: MessageSquareQuote },
   { href: "/admin/analytics", label: "Analytics", icon: BarChart3 },
+];
+
+const superAdminLinks: NavLink[] = [
+  { href: "/admin/team", label: "Team", icon: Users },
   { href: "/admin/settings", label: "Settings", icon: Settings },
 ];
 
 export function AdminSidebar({
   userName,
   userEmail,
+  isSuperAdmin,
   signOutAction,
 }: {
   userName: string;
   userEmail: string;
+  isSuperAdmin: boolean;
   signOutAction: () => Promise<void>;
 }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const links = isSuperAdmin ? [...baseLinks, ...superAdminLinks] : baseLinks;
 
   const isActive = (href: string, exact?: boolean) =>
     exact ? pathname === href : pathname === href || pathname.startsWith(href + "/");
@@ -69,7 +84,7 @@ export function AdminSidebar({
             Swift<span className="text-brand-400">Verify</span>
           </span>
           <span className="rounded-full bg-brand-500/15 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-brand-300">
-            Admin
+            {isSuperAdmin ? "Super Admin" : "Admin"}
           </span>
         </div>
 

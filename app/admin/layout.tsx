@@ -12,7 +12,8 @@ export const metadata: Metadata = {
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   // Defence in depth — middleware already blocks non-admins, but never trust it alone.
   const session = await auth();
-  if (session?.user?.role !== "ADMIN") redirect("/login");
+  const role = session?.user?.role;
+  if (!session || (role !== "ADMIN" && role !== "SUPER_ADMIN")) redirect("/login");
 
   async function handleSignOut() {
     "use server";
@@ -38,6 +39,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
       <AdminSidebar
         userName={session.user.name ?? "Admin"}
         userEmail={session.user.email ?? ""}
+        isSuperAdmin={role === "SUPER_ADMIN"}
         signOutAction={handleSignOut}
       />
       <main className="min-w-0 flex-1">{children}</main>

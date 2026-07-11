@@ -1,6 +1,8 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import bcrypt from "bcryptjs";
+import type { Role } from "@prisma/client";
 import { auth } from "@/auth";
 import { db } from "@/lib/db";
 import { updateSettings, type SiteSettings } from "@/lib/settings";
@@ -10,11 +12,21 @@ import {
   sendOrderCompleted,
 } from "@/lib/email";
 
-/** Throw unless the current session belongs to an ADMIN. Every action calls this. */
+/** Throw unless the current session belongs to an ADMIN or SUPER_ADMIN. Every action calls this. */
 async function requireAdmin() {
   const session = await auth();
-  if (session?.user?.role !== "ADMIN") {
+  const role = session?.user?.role;
+  if (role !== "ADMIN" && role !== "SUPER_ADMIN") {
     throw new Error("Not authorized.");
+  }
+  return session;
+}
+
+/** Throw unless the current session belongs to a SUPER_ADMIN. For team management + financial settings. */
+async function requireSuperAdmin() {
+  const session = await auth();
+  if (session?.user?.role !== "SUPER_ADMIN") {
+    throw new Error("Only Super Admins can do this.");
   }
   return session;
 }
@@ -246,11 +258,89 @@ export async function deleteTestimonial(id: string): Promise<ActionResult> {
 // ---- Settings -------------------------------------------------------------
 
 export async function saveSettings(patch: Partial<SiteSettings>): Promise<ActionResult> {
-  await requireAdmin();
+  await requireSuperAdmin();
   await updateSettings(patch);
   revalidatePath("/admin/settings");
   revalidatePath("/");
   // Payment pages read settings; force them to re-read.
   revalidatePath("/order", "layout");
   return { ok: true, message: "Settings saved." };
+}
+
+// ---- Team (Super Admin only) ----------------------------------------------
+
+export type CreateAdminInput = {
+  email: string;
+  name: string;
+  password: string;
+  role: "ADMIN" | "SUPER_ADMIN";
+};
+
+export async function createAdmin(input: CreateAdminInput): Promise<ActionResult> {
+  await requireSuperAdmin();
+
+  const email = input.email.trim().toLowerCase();
+  if (!email || !email.includes("@")) return { ok: false, error: "Enter a valid email." };
+  if (input.password.length < 8) {
+    return { ok: false, error: "Password must be at least 8 characters." };
+  }
+
+  const existing = await db.user.findUnique({ where: { email } });
+  if (existing) return { ok: false, error: "A user with this email already exists." };
+
+  const hash = await bcrypt.hash(input.password, 12);
+  await db.user.create({
+    data: { email, name: input.name.trim() || null, password: hash, role: input.role },
+  });
+
+  revalidatePath("/admin/team");
+  return { ok: true, message: "Admin account created." };
+}
+
+export async function updateAdminRole(userId: string, role: "ADMIN" | "SUPER_ADMIN"): Promise<ActionResult> {
+  const session = await requireSuperAdmin();
+
+  if (role === "ADMIN" && userId === session.user.id) {
+    return { ok: false, error: "You can't demote your own account." };
+  }
+  if (role === "ADMIN") {
+    const superAdminCount = await db.user.count({ where: { role: "SUPER_ADMIN" } });
+    const target = await db.user.findUnique({ where: { id: userId } });
+    if (target?.role === "SUPER_ADMIN" && superAdminCount <= 1) {
+      return { ok: false, error: "At least one Super Admin must remain." };
+    }
+  }
+
+  await db.user.update({ where: { id: userId }, data: { role } });
+  revalidatePath("/admin/team");
+  return { ok: true, message: "Role updated." };
+}
+
+export async function resetAdminPassword(userId: string, newPassword: string): Promise<ActionResult> {
+  await requireSuperAdmin();
+  if (newPassword.length < 8) return { ok: false, error: "Password must be at least 8 characters." };
+
+  const hash = await bcrypt.hash(newPassword, 12);
+  await db.user.update({ where: { id: userId }, data: { password: hash } });
+  revalidatePath("/admin/team");
+  return { ok: true, message: "Password reset." };
+}
+
+export async function deleteAdmin(userId: string): Promise<ActionResult> {
+  const session = await requireSuperAdmin();
+
+  if (userId === session.user.id) return { ok: false, error: "You can't remove your own account." };
+
+  const target = await db.user.findUnique({ where: { id: userId } });
+  if (!target) return { ok: false, error: "User not found." };
+  if (target.role === "SUPER_ADMIN") {
+    const superAdminCount = await db.user.count({ where: { role: "SUPER_ADMIN" } });
+    if (superAdminCount <= 1) return { ok: false, error: "At least one Super Admin must remain." };
+  }
+
+  // Demote rather than delete if they own orders/testimonials edits elsewhere — but User has no
+  // such FK from Order (orders link to a separate client), so a hard delete is safe here.
+  await db.user.delete({ where: { id: userId } });
+  revalidatePath("/admin/team");
+  return { ok: true, message: "Admin removed." };
 }
