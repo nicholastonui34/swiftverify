@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { ArrowLeft, CreditCard, MessageCircle, LifeBuoy } from "lucide-react";
+import { ArrowLeft, CreditCard, MessageCircle, LifeBuoy, Receipt } from "lucide-react";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { FloatingButtons } from "@/components/FloatingButtons";
@@ -13,6 +13,8 @@ import { formatKES } from "@/lib/utils";
 
 export const metadata: Metadata = { title: "Order status", robots: { index: false } };
 export const dynamic = "force-dynamic";
+
+const PAID_STATUSES = new Set(["APPROVED", "IN_PROGRESS", "COMPLETED"]);
 
 export default async function OrderStatusPage({
   params,
@@ -55,6 +57,15 @@ export default async function OrderStatusPage({
               {formatKES(order.priceKES)}
             </p>
           </div>
+
+          {PAID_STATUSES.has(order.status) && (
+            <Link
+              href={`/order/${order.id}/receipt`}
+              className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-brand-600 hover:text-brand-700 hover:underline"
+            >
+              <Receipt className="h-4 w-4" /> Download receipt
+            </Link>
+          )}
 
           {/* Contextual CTA */}
           <ContextualCta status={order.status} orderId={order.id} />
