@@ -13,22 +13,24 @@ import { getSettings } from "./settings";
 
 const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 
-export async function notifyTelegram(text: string): Promise<void> {
-  let settings;
+/** The admin chat id notifications go to (Settings override, falling back to env). */
+export async function adminChatId(): Promise<string | null> {
   try {
-    settings = await getSettings();
+    const settings = await getSettings();
+    return settings.telegramChatId || process.env.TELEGRAM_ADMIN_CHAT_ID || null;
   } catch {
-    return;
+    return process.env.TELEGRAM_ADMIN_CHAT_ID || null;
   }
+}
 
-  const chatId = settings.telegramChatId || process.env.TELEGRAM_ADMIN_CHAT_ID;
-  if (!BOT_TOKEN || !chatId || !settings.telegramNotifications) {
+/** Low-level send to an arbitrary chat id — used for both notifications and command replies. */
+export async function sendTelegramMessage(chatId: string, text: string): Promise<void> {
+  if (!BOT_TOKEN) {
     if (process.env.NODE_ENV !== "production") {
       console.log(`[telegram:skip] ${text.replace(/\n/g, " ")}`);
     }
     return;
   }
-
   try {
     const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
       method: "POST",
@@ -46,6 +48,25 @@ export async function notifyTelegram(text: string): Promise<void> {
   } catch (err) {
     console.error("[telegram] send failed:", err);
   }
+}
+
+export async function notifyTelegram(text: string): Promise<void> {
+  let settings;
+  try {
+    settings = await getSettings();
+  } catch {
+    return;
+  }
+
+  const chatId = settings.telegramChatId || process.env.TELEGRAM_ADMIN_CHAT_ID;
+  if (!chatId || !settings.telegramNotifications) {
+    if (process.env.NODE_ENV !== "production") {
+      console.log(`[telegram:skip] ${text.replace(/\n/g, " ")}`);
+    }
+    return;
+  }
+
+  await sendTelegramMessage(chatId, text);
 }
 
 /** Escape user-supplied text for Telegram HTML parse mode. */
