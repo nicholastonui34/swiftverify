@@ -40,6 +40,12 @@ export function Navbar() {
           >
             Track order
           </Link>
+          <Link
+            href="/account/login"
+            className="text-sm font-medium text-navy-600 transition-colors hover:text-navy-900"
+          >
+            Sign in
+          </Link>
           <a
             href={siteConfig.telegram}
             target="_blank"
@@ -86,6 +92,13 @@ export function Navbar() {
               className="block rounded-lg px-3 py-2.5 text-base font-medium text-navy-700 hover:bg-navy-50"
             >
               Track order
+            </Link>
+            <Link
+              href="/account/login"
+              onClick={() => setOpen(false)}
+              className="block rounded-lg px-3 py-2.5 text-base font-medium text-navy-700 hover:bg-navy-50"
+            >
+              Sign in
             </Link>
             <Link
               href="/order"

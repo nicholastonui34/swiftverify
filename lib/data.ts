@@ -138,6 +138,37 @@ export async function getOrderStatus(orderId: string): Promise<OrderStatusView |
   }
 }
 
+export type ClientOrderView = {
+  id: string;
+  serviceName: string;
+  priceKES: number;
+  status: OrderStatus;
+  hasProof: boolean;
+  createdAt: Date;
+};
+
+/** Full order history for a signed-in client's account dashboard. */
+export async function getClientOrders(clientId: string): Promise<ClientOrderView[]> {
+  if (!isDbConfigured) return [];
+  try {
+    const orders = await db.order.findMany({
+      where: { clientId },
+      include: { service: true },
+      orderBy: { createdAt: "desc" },
+    });
+    return orders.map((o) => ({
+      id: o.id,
+      serviceName: o.service.name,
+      priceKES: o.priceKES,
+      status: o.status,
+      hasProof: Boolean(o.mpesaProofUrl),
+      createdAt: o.createdAt,
+    }));
+  } catch {
+    return [];
+  }
+}
+
 /**
  * Look up an order by id + email (case-insensitive). Used by the /track form to
  * confirm the requester owns the order before revealing its status link.

@@ -1,5 +1,6 @@
 import type { NextAuthConfig } from "next-auth";
 import type { Role } from "@prisma/client";
+import { NextResponse } from "next/server";
 
 /**
  * Edge-safe Auth.js config. Contains NO database or bcrypt imports so it can run
@@ -36,6 +37,17 @@ export const authConfig = {
       const isAdminArea = pathname.startsWith("/admin");
       if (isAdminArea) {
         return auth?.user?.role === "ADMIN" || auth?.user?.role === "SUPER_ADMIN";
+      }
+      const isAccountArea =
+        pathname.startsWith("/account") &&
+        pathname !== "/account/login" &&
+        pathname !== "/account/signup";
+      if (isAccountArea && !auth?.user) {
+        // Override the default `pages.signIn` redirect (which points at the
+        // staff /login) so unauthenticated clients land on /account/login.
+        const url = new URL("/account/login", request.nextUrl);
+        url.searchParams.set("callbackUrl", pathname);
+        return NextResponse.redirect(url);
       }
       return true;
     },

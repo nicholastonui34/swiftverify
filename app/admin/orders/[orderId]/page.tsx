@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { ArrowLeft, Mail, Phone, Globe, Smartphone, Calendar } from "lucide-react";
+import { ArrowLeft, Mail, Phone, Globe, Smartphone, Calendar, Download } from "lucide-react";
 import { getOrderById } from "@/lib/admin";
 import { formatKES } from "@/lib/utils";
 import { StatusBadge } from "@/components/admin/StatusBadge";
@@ -87,16 +87,29 @@ export default async function OrderDetailPage({
 
           <Card title="M-PESA payment proof">
             {order.mpesaProofUrl ? (
-              <a href={order.mpesaProofUrl} target="_blank" rel="noopener noreferrer">
-                {/* Base64 data URL — next/image can't optimise it, plain img is correct. */}
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={order.mpesaProofUrl}
-                  alt="M-PESA receipt"
-                  className="max-h-[28rem] w-auto rounded-xl border border-navy-100"
-                />
-                <span className="mt-2 block text-xs text-navy-400">Click to open full size</span>
-              </a>
+              <div>
+                <a href={order.mpesaProofUrl} target="_blank" rel="noopener noreferrer">
+                  {/* Base64 data URL — next/image can't optimise it, plain img is correct. */}
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={order.mpesaProofUrl}
+                    alt="M-PESA receipt"
+                    className="max-h-[28rem] w-auto rounded-xl border border-navy-100"
+                  />
+                </a>
+                <div className="mt-3 flex flex-wrap items-center gap-3">
+                  <span className="text-xs text-navy-400">Click image to open full size</span>
+                  <a
+                    href={order.mpesaProofUrl}
+                    download={`mpesa-proof-${order.id.slice(-8)}.${proofExtension(
+                      order.mpesaProofUrl
+                    )}`}
+                    className="ml-auto inline-flex items-center gap-1.5 rounded-full border border-navy-200 px-3.5 py-1.5 text-xs font-semibold text-navy-700 transition-colors hover:bg-navy-50"
+                  >
+                    <Download className="h-3.5 w-3.5" /> Download
+                  </a>
+                </div>
+              </div>
             ) : (
               <p className="rounded-xl bg-navy-50 px-4 py-6 text-center text-sm text-navy-500">
                 No receipt uploaded yet.
@@ -118,6 +131,13 @@ export default async function OrderDetailPage({
       </div>
     </div>
   );
+}
+
+/** Infer a download file extension from a `data:image/...` URL's mime type. */
+function proofExtension(dataUrl: string): string {
+  const match = /^data:image\/(\w+);/.exec(dataUrl);
+  const type = match?.[1] ?? "jpg";
+  return type === "jpeg" ? "jpg" : type;
 }
 
 function Card({ title, children }: { title: string; children: React.ReactNode }) {
