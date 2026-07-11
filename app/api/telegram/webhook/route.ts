@@ -14,7 +14,10 @@ import { handleTelegramCommand } from "@/lib/telegram-commands";
  * replied to, so a stranger who finds the bot username learns nothing.
  */
 export async function POST(request: NextRequest) {
-  const expectedSecret = process.env.TELEGRAM_WEBHOOK_SECRET;
+  // Trimmed defensively: env values pasted/piped in via some shells (e.g.
+  // PowerShell's CRLF pipe) can pick up a stray trailing \r that the Vercel
+  // CLI's newline-stripping doesn't catch.
+  const expectedSecret = process.env.TELEGRAM_WEBHOOK_SECRET?.trim();
   if (expectedSecret) {
     const gotSecret = request.headers.get("x-telegram-bot-api-secret-token");
     if (gotSecret !== expectedSecret) {
