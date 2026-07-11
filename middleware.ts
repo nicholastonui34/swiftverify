@@ -11,6 +11,6 @@ const { auth } = NextAuth(authConfig);
 export default auth;
 
 export const config = {
-  // Run on /admin routes only. Auth API + static assets are excluded.
-  matcher: ["/admin/:path*"],
+  // Run on /admin + /account routes. Auth API + static assets are excluded.
+  matcher: ["/admin/:path*", "/account/:path*"],
 };

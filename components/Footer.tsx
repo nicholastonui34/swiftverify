@@ -21,6 +21,7 @@ const columns = [
       { label: "Contact", href: siteConfig.telegram },
       { label: "Place an order", href: "/order" },
       { label: "Track my order", href: "/track" },
+      { label: "My account", href: "/account/login" },
     ],
   },
   {
