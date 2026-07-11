@@ -1,5 +1,6 @@
 import { siteConfig } from "./config";
 import type { Service, Faq } from "./content";
+import type { Guide } from "./guides";
 
 /** Canonical public origin, e.g. https://swiftverify-alpha.vercel.app (no trailing slash). */
 export const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? siteConfig.url).replace(/\/$/, "");
@@ -70,6 +71,39 @@ export function faqLd(faqs: Faq[]) {
       "@type": "Question",
       name: f.question,
       acceptedAnswer: { "@type": "Answer", text: f.answer },
+    })),
+  };
+}
+
+export function articleLd(guide: Guide) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: guide.title,
+    description: guide.description,
+    keywords: guide.keywords.join(", "),
+    datePublished: guide.datePublished,
+    dateModified: guide.dateModified,
+    image: absoluteUrl("/opengraph-image"),
+    mainEntityOfPage: { "@type": "WebPage", "@id": absoluteUrl(`/guides/${guide.slug}`) },
+    author: { "@type": "Organization", name: siteConfig.name, url: siteUrl },
+    publisher: {
+      "@type": "Organization",
+      name: siteConfig.name,
+      logo: { "@type": "ImageObject", url: absoluteUrl("/logo-mark.svg") },
+    },
+  };
+}
+
+export function breadcrumbLd(items: { name: string; path: string }[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: items.map((item, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      name: item.name,
+      item: absoluteUrl(item.path),
     })),
   };
 }
