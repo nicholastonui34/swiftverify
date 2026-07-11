@@ -1,7 +1,8 @@
 "use server";
 
+import { redirect } from "next/navigation";
 import { AuthError } from "next-auth";
-import { signIn } from "@/auth";
+import { auth, signIn } from "@/auth";
 import { rateLimitByIp } from "@/lib/security";
 
 export type LoginState = { error?: string };
@@ -18,18 +19,21 @@ export async function login(_prev: LoginState, formData: FormData): Promise<Logi
 
   if (!email || !password) return { error: "Enter your email and password." };
 
+  let ok = false;
   try {
-    await signIn("credentials", {
-      email,
-      password,
-      redirectTo: "/admin",
-    });
+    const result = await signIn("credentials", { email, password, redirect: false });
+    ok = !result?.error;
   } catch (error) {
-    // signIn throws a NEXT_REDIRECT on success — let it propagate.
     if (error instanceof AuthError) {
       return { error: "Invalid email or password." };
     }
     throw error;
   }
-  return {};
+  if (!ok) return { error: "Invalid email or password." };
+
+  // Admins/staff land in the dashboard; clients land on order tracking (no
+  // separate client dashboard exists yet).
+  const session = await auth();
+  const role = session?.user?.role;
+  redirect(role === "ADMIN" || role === "SUPER_ADMIN" ? "/admin" : "/track");
 }

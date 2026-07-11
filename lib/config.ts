@@ -26,6 +26,10 @@ export const siteConfig = {
   mpesaTill: "3561312",
   mpesaMerchantName: "NICHOLAS TONUI",
 
+  // Crypto payment options (configurable in admin Settings)
+  usdtTrc20Address: "TW5aWQhPp2QZimRYMjAkaAURykbxZRRoPc",
+  binancePayId: "820002132",
+
   // Promo funnel: first N clients get the promo price
   promoLimit: 10,
   promoUsed: 3, // Phase 2: read live count from PromoTracker

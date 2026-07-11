@@ -2,6 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
+import bcrypt from "bcryptjs";
 import { db } from "@/lib/db";
 import { getServiceBySlug, getPromoState, priceFor } from "@/lib/data";
 import {
@@ -38,11 +39,15 @@ export async function createOrder(
   const phone = String(formData.get("phone") ?? "").trim();
   const country = String(formData.get("country") ?? "").trim();
   const serviceSlug = String(formData.get("service") ?? "").trim();
+  const password = String(formData.get("password") ?? "");
+  const confirmPassword = String(formData.get("confirmPassword") ?? "");
   const terms = formData.get("terms") === "on";
 
   if (!name) return { error: "Please enter your name." };
   if (!EMAIL_RE.test(email)) return { error: "Please enter a valid email address." };
   if (!serviceSlug) return { error: "Please choose a service." };
+  if (password.length < 6) return { error: "Password must be at least 6 characters." };
+  if (password !== confirmPassword) return { error: "Passwords do not match." };
   if (!terms) return { error: "Please accept the terms to continue." };
 
   const service = await getServiceBySlug(serviceSlug);
@@ -56,10 +61,21 @@ export async function createOrder(
   const serviceRow = await db.service.findUnique({ where: { slug: service.slug } });
   if (!serviceRow) return { error: "That service is no longer available." };
 
+  // Sign-up happens right here at checkout, no verification email/code: if this
+  // email doesn't have a password yet, the one they just typed creates their
+  // account. Returning clients (password already set) keep their existing one.
+  const existingUser = await db.user.findUnique({ where: { email } });
+  const passwordHash = existingUser?.password ? undefined : await bcrypt.hash(password, 10);
+
   const user = await db.user.upsert({
     where: { email },
-    update: { name, phone: phone || undefined, country: country || undefined },
-    create: { email, name, phone: phone || null, country: country || null },
+    update: {
+      name,
+      phone: phone || undefined,
+      country: country || undefined,
+      ...(passwordHash ? { password: passwordHash } : {}),
+    },
+    create: { email, name, phone: phone || null, country: country || null, password: passwordHash },
   });
 
   const order = await db.order.create({
@@ -102,12 +118,18 @@ export async function submitPayment(
 
   const orderId = String(formData.get("orderId") ?? "");
   const mpesaPhone = String(formData.get("mpesaPhone") ?? "").trim();
+  const paymentMethodRaw = String(formData.get("paymentMethod") ?? "MPESA");
+  const paymentMethod = (["MPESA", "USDT_TRC20", "BINANCE_PAY"] as const).includes(
+    paymentMethodRaw as "MPESA" | "USDT_TRC20" | "BINANCE_PAY"
+  )
+    ? (paymentMethodRaw as "MPESA" | "USDT_TRC20" | "BINANCE_PAY")
+    : "MPESA";
   const file = formData.get("receipt");
 
   if (!orderId) return { error: "Missing order." };
-  if (!mpesaPhone) return { error: "Enter the phone number that sent the M-PESA payment." };
+  if (!mpesaPhone) return { error: "Enter the phone number or wallet you paid from." };
   if (!(file instanceof File) || file.size === 0) {
-    return { error: "Please upload your M-PESA receipt image." };
+    return { error: "Please upload your payment receipt/screenshot." };
   }
   if (!ALLOWED_TYPES.includes(file.type)) {
     return { error: "Receipt must be a JPG, PNG or WEBP image." };
@@ -132,6 +154,7 @@ export async function submitPayment(
     data: {
       mpesaProofUrl: dataUrl,
       mpesaPhone,
+      paymentMethod,
       status: order.status === "PENDING_PAYMENT" ? "PAYMENT_SUBMITTED" : order.status,
     },
   });

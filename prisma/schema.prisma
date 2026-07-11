@@ -30,6 +30,12 @@ enum OrderStatus {
   CANCELLED
 }
 
+enum PaymentMethod {
+  MPESA
+  USDT_TRC20
+  BINANCE_PAY
+}
+
 model User {
   id        String   @id @default(cuid())
   email     String   @unique
@@ -62,8 +68,9 @@ model Order {
   service       Service       @relation(fields: [serviceId], references: [id])
   status        OrderStatus   @default(PENDING_PAYMENT)
   priceKES      Int
-  mpesaProofUrl String?
-  mpesaPhone    String?
+  paymentMethod PaymentMethod @default(MPESA)
+  mpesaProofUrl String? // payment proof screenshot (M-PESA receipt or crypto tx screenshot)
+  mpesaPhone    String? // payment reference: M-PESA sender phone, or wallet/txn id for crypto
   notes         String?
   promo         PromoTracker?
   createdAt     DateTime      @default(now())

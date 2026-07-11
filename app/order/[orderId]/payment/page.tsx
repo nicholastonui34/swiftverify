@@ -69,6 +69,8 @@ export default async function PaymentPage({
               amountKES={order.priceKES}
               till={settings.mpesaTill}
               merchantName={settings.mpesaMerchantName}
+              usdtTrc20Address={settings.usdtTrc20Address}
+              binancePayId={settings.binancePayId}
               alreadySubmitted={alreadySubmitted}
             />
           </div>

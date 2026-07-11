@@ -107,7 +107,7 @@ function ContextualCta({ status, orderId }: { status: string; orderId: string })
         <div className="flex items-start gap-3">
           <CreditCard className="mt-0.5 h-5 w-5 shrink-0 text-brand-600" />
           <p className="text-sm text-navy-700">
-            We&apos;re waiting for your M-PESA payment to get started.
+            We&apos;re waiting for your payment to get started.
           </p>
         </div>
         <Link

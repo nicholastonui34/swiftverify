@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { ArrowLeft, Send, MessageCircle, ShieldCheck } from "lucide-react";
+import { ArrowLeft, Send, MessageCircle, ShieldCheck, HelpCircle } from "lucide-react";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { FloatingButtons } from "@/components/FloatingButtons";
@@ -45,17 +45,38 @@ export default async function OrderPage({
             Place your order
           </h1>
           <p className="mt-2 text-navy-600">
-            Fill in your details and continue to M-PESA payment. We verify
-            everything manually — your money is safe.
+            Fill in your details and continue to payment via M-PESA, USDT
+            (TRC20) or Binance Pay. We verify everything manually — your money
+            is safe.
           </p>
 
-          <div className="mt-8 rounded-3xl border border-navy-100 bg-white p-6 shadow-[var(--shadow-card)] sm:p-8">
+          <a
+            href={`${siteConfig.whatsapp}?text=${encodeURIComponent(
+              "Hi SwiftVerify! I'd like a free consultation before placing an order."
+            )}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-6 flex items-center justify-between gap-3 rounded-2xl border border-[#25D366]/30 bg-[#25D366]/10 px-5 py-4 transition-colors hover:bg-[#25D366]/15"
+          >
+            <span className="flex items-center gap-3">
+              <HelpCircle className="h-5 w-5 shrink-0 text-[#128C7E]" />
+              <span className="text-sm text-navy-800">
+                <span className="font-semibold">Not sure which service you need?</span>{" "}
+                Book a free WhatsApp consultation before you order.
+              </span>
+            </span>
+            <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-[#25D366] px-4 py-2 text-xs font-semibold text-white">
+              <MessageCircle className="h-3.5 w-3.5" /> Chat now
+            </span>
+          </a>
+
+          <div className="mt-6 rounded-3xl border border-navy-100 bg-white p-6 shadow-[var(--shadow-card)] sm:p-8">
             <OrderForm services={services} promo={promo} defaultSlug={defaultSlug} />
           </div>
 
           <p className="mt-6 inline-flex items-center gap-2 text-xs text-navy-500">
             <ShieldCheck className="h-4 w-4 text-brand-500" />
-            Manual M-PESA verification · no card details ever required
+            Manual payment verification · no card details ever required
           </p>
         </section>
       </main>

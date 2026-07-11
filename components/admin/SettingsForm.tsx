@@ -48,6 +48,23 @@ export function SettingsForm({ initial }: { initial: SiteSettings }) {
         </Field>
       </Section>
 
+      <Section title="Crypto payment" desc="Shown to clients on the payment page alongside M-PESA.">
+        <Field label="USDT (TRC20) wallet address">
+          <input
+            value={form.usdtTrc20Address}
+            onChange={(e) => set("usdtTrc20Address", e.target.value)}
+            className={`${inputCls} font-mono text-xs`}
+          />
+        </Field>
+        <Field label="Binance Pay ID">
+          <input
+            value={form.binancePayId}
+            onChange={(e) => set("binancePayId", e.target.value)}
+            className={inputCls}
+          />
+        </Field>
+      </Section>
+
       <Section title="Contact & promo">
         <Field label="Admin / support email">
           <input

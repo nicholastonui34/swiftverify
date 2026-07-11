@@ -73,6 +73,30 @@ export function OrderForm({
         <Field label="Country" name="country" placeholder="Kenya" />
       </div>
 
+      <div>
+        <p className="text-sm font-semibold text-navy-800">Create your account</p>
+        <p className="mt-0.5 text-xs text-navy-500">
+          Set a password so you can log in and track your orders later — no
+          verification code needed.
+        </p>
+        <div className="mt-3 grid gap-4 sm:grid-cols-2">
+          <Field
+            label="Password"
+            name="password"
+            type="password"
+            placeholder="At least 6 characters"
+            required
+          />
+          <Field
+            label="Confirm password"
+            name="confirmPassword"
+            type="password"
+            placeholder="Re-enter password"
+            required
+          />
+        </div>
+      </div>
+
       <label className="flex items-start gap-3 text-sm text-navy-600">
         <input
           type="checkbox"

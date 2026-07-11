@@ -53,6 +53,7 @@ export default async function OrderDetailPage({
                 </span>
               </Field>
               <Field label="Promo used">{order.promo ? "Yes — promo price" : "No"}</Field>
+              <Field label="Payment method">{paymentMethodLabel(order.paymentMethod)}</Field>
               <Field label="Approved at">
                 {order.approvedAt
                   ? new Date(order.approvedAt).toLocaleDateString("en-KE")
@@ -85,7 +86,7 @@ export default async function OrderDetailPage({
             </div>
           </Card>
 
-          <Card title="M-PESA payment proof">
+          <Card title="Payment proof">
             {order.mpesaProofUrl ? (
               <div>
                 <a href={order.mpesaProofUrl} target="_blank" rel="noopener noreferrer">
@@ -131,6 +132,17 @@ export default async function OrderDetailPage({
       </div>
     </div>
   );
+}
+
+function paymentMethodLabel(method: string): string {
+  switch (method) {
+    case "USDT_TRC20":
+      return "USDT (TRC20)";
+    case "BINANCE_PAY":
+      return "Binance Pay";
+    default:
+      return "M-PESA";
+  }
 }
 
 /** Infer a download file extension from a `data:image/...` URL's mime type. */
