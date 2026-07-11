@@ -31,9 +31,8 @@ export async function login(_prev: LoginState, formData: FormData): Promise<Logi
   }
   if (!ok) return { error: "Invalid email or password." };
 
-  // Admins/staff land in the dashboard; clients land on order tracking (no
-  // separate client dashboard exists yet).
+  // Admins/staff land in the dashboard; clients land on their order history.
   const session = await auth();
   const role = session?.user?.role;
-  redirect(role === "ADMIN" || role === "SUPER_ADMIN" ? "/admin" : "/track");
+  redirect(role === "ADMIN" || role === "SUPER_ADMIN" ? "/admin" : "/account");
 }
