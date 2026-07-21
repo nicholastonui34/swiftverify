@@ -21,7 +21,7 @@ export function organizationLd() {
     logo: absoluteUrl("/logo-mark.svg"),
     description: siteConfig.description,
     sameAs: [siteConfig.telegram].filter(Boolean),
-    areaServed: ["KE", "TZ", "UG"],
+    areaServed: ["KE", "TZ", "UG", "US", "GB", "EU"],
     contactPoint: {
       "@type": "ContactPoint",
       contactType: "customer support",

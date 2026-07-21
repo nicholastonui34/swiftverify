@@ -5,17 +5,17 @@ const points = [
   {
     icon: ShieldCheck,
     title: `${siteConfig.successRate}% success rate`,
-    body: "We prepare your documents to the exact spec Payoneer's review accepts — so they pass the first time.",
+    body: "We prepare your documents and account setup to the exact spec Payoneer and Stripe accept — so they pass the first time.",
   },
   {
     icon: Users,
     title: `${siteConfig.sellersVerified}+ sellers verified`,
-    body: `Trusted by freelancers and sellers across East Africa over ${siteConfig.yearsActive} years.`,
+    body: `Trusted by freelancers, agencies and online businesses over ${siteConfig.yearsActive} years.`,
   },
   {
     icon: Smartphone,
-    title: "Pay safely with M-PESA",
-    body: "Manual M-PESA verification — no card details, no risky payment APIs, ever.",
+    title: "Pay by card or M-PESA",
+    body: "Secure Stripe Checkout for instant card payment, or manual M-PESA verification — your choice.",
   },
   {
     icon: MessageCircle,
@@ -37,8 +37,9 @@ export function WhyUs() {
             Verification done right, the first time
           </h2>
           <p className="mt-3 text-navy-600">
-            Most Payoneer rejections come down to document formatting. That&apos;s exactly what we
-            get right — so you stop guessing and start getting paid.
+            Most Payoneer and Stripe account rejections come down to formatting and
+            compliance details. That&apos;s exactly what we get right — so you stop
+            guessing and start getting paid.
           </p>
         </div>
 

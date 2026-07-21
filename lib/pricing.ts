@@ -151,6 +151,25 @@ export function priceForCheckout(
   return service.priceUSD ?? 0;
 }
 
+/** Applies the live "first 20 accounts" promo state to the Stripe Onboarding
+ *  service so any UI displaying it always matches what checkout will actually
+ *  charge. No-op for every other service. */
+export function withLiveStripeOnboardingPromo(
+  service: StripeService,
+  promo: { active: boolean; remaining: number }
+): StripeService {
+  if (service.slug !== "stripe-onboarding") return service;
+  if (promo.active) {
+    return { ...service, badge: `First ${promo.remaining} Spots Left` };
+  }
+  return {
+    ...service,
+    priceUSD: 150,
+    regularPriceUSD: undefined,
+    badge: "Standard Rate",
+  };
+}
+
 export const launchOffer = {
   title: "🚀 Limited-Time Launch Offer",
   subtitle: "Stripe Account Setup with 3 Months FREE Support",

@@ -115,7 +115,7 @@ function FaqSection() {
             Questions, answered
           </h2>
           <p className="mt-3 text-navy-600">
-            Everything you need to know before getting your Payoneer account verified.
+            Everything you need to know before getting verified on Payoneer or Stripe.
           </p>
         </div>
         <div className="mt-10">

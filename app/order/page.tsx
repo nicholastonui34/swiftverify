@@ -7,12 +7,13 @@ import { FloatingButtons } from "@/components/FloatingButtons";
 import { OrderForm } from "@/components/OrderForm";
 import { isDbConfigured } from "@/lib/db";
 import { getServices, getPromoState } from "@/lib/data";
+import { getStripeOnboardingPromoState } from "@/lib/stripe-checkout";
 import { siteConfig } from "@/lib/config";
 
 export const metadata: Metadata = {
   title: "Place an Order",
   description:
-    "Order Payoneer account verification, document formatting or a US/UK/Canada receiving account. Pay securely via M-PESA.",
+    "Order Payoneer verification, Stripe account onboarding, document formatting or a global receiving account. Pay securely by card or M-PESA.",
   alternates: { canonical: "/order" },
 };
 export const dynamic = "force-dynamic";
@@ -28,7 +29,11 @@ export default async function OrderPage({
     return <OrderingUnavailable />;
   }
 
-  const [services, promo] = await Promise.all([getServices(), getPromoState()]);
+  const [services, promo, stripePromo] = await Promise.all([
+    getServices(),
+    getPromoState(),
+    getStripeOnboardingPromoState(),
+  ]);
 
   return (
     <>
@@ -45,9 +50,8 @@ export default async function OrderPage({
             Place your order
           </h1>
           <p className="mt-2 text-navy-600">
-            Fill in your details and continue to payment via M-PESA, USDT
-            (TRC20) or Binance Pay. We verify everything manually — your money
-            is safe.
+            Choose a service below — pay instantly by card via Stripe, or via
+            M-PESA, USDT (TRC20) or Binance Pay if you prefer.
           </p>
 
           <a
@@ -71,7 +75,12 @@ export default async function OrderPage({
           </a>
 
           <div className="mt-6 rounded-3xl border border-navy-100 bg-white p-6 shadow-[var(--shadow-card)] sm:p-8">
-            <OrderForm services={services} promo={promo} defaultSlug={defaultSlug} />
+            <OrderForm
+              services={services}
+              promo={promo}
+              stripePromo={stripePromo}
+              defaultSlug={defaultSlug}
+            />
           </div>
 
           <p className="mt-6 inline-flex items-center gap-2 text-xs text-navy-500">

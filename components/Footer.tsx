@@ -44,8 +44,8 @@ export function Footer() {
               <Logo />
             </div>
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-navy-200">
-              Payoneer verification &amp; global receiving accounts for East
-              African freelancers and sellers.
+              Payoneer verification, Stripe account setup &amp; global receiving
+              accounts for freelancers and online businesses worldwide.
             </p>
             <div className="mt-5 flex gap-3">
               <a

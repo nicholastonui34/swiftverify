@@ -154,14 +154,19 @@ export type Faq = { question: string; answer: string };
 
 export const faqs: Faq[] = [
   {
-    question: "Is SwiftVerify affiliated with Payoneer?",
+    question: "Is SwiftVerify affiliated with Payoneer or Stripe?",
     answer:
-      "No. We're an independent verification and document-formatting service. We help you prepare and submit the right documents so your own Payoneer account passes KYC — we never ask for your Payoneer password.",
+      "No. We're an independent onboarding, verification and document-formatting service. We help you prepare and submit the right information so your own Payoneer or Stripe account passes review — we never ask for your account password.",
+  },
+  {
+    question: "What does Stripe Onboarding Assistance include?",
+    answer:
+      "We guide you through setting up a Stripe account correctly the first time — business configuration, compliance best practices, and the details that get accounts approved rather than flagged for review. Once live, you can accept 36+ payment methods in 140+ currencies. Every Stripe setup includes 3 months of free follow-up support.",
   },
   {
     question: "How long does verification take?",
     answer:
-      "Most document formatting is delivered within a few hours. Full account verification depends on Payoneer's review, but correctly formatted documents typically pass within 24–72 hours instead of being repeatedly rejected.",
+      "Most document formatting is delivered within a few hours. Full account approval depends on Payoneer's or Stripe's own review, but correctly prepared applications typically pass within 24–72 hours instead of being repeatedly rejected.",
   },
   {
     question: "How do I pay?",
@@ -176,7 +181,7 @@ export const faqs: Faq[] = [
   {
     question: "Which countries do you support?",
     answer:
-      "We focus on East Africa — Kenya, Tanzania, Uganda and neighbouring countries — but our document-formatting help works for freelancers and sellers anywhere Payoneer operates.",
+      "Our Payoneer verification and document-formatting help was built for East Africa — Kenya, Tanzania, Uganda and neighbouring countries. Stripe Onboarding Assistance is open to clients worldwide, including the USA, United Kingdom, Belgium, European Union, Mexico, Finland and other Stripe-supported countries (international pricing applies outside East Africa).",
   },
   {
     question: "Can you set up US, UK or Canada receiving accounts?",
