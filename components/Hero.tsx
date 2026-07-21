@@ -16,14 +16,14 @@ export function Hero({ stripePromo }: { stripePromo: StripeOnboardingPromoState 
           </div>
 
           <h1 className="mt-5 font-display text-4xl font-bold leading-[1.08] tracking-tight text-navy-900 sm:text-5xl lg:text-6xl">
-            Get your Payoneer verified.{" "}
+            Get verified on Payoneer & Stripe.{" "}
             <span className="text-brand-600">Fast. Compliant.</span>
           </h1>
 
           <p className="mt-5 max-w-xl text-lg leading-relaxed text-navy-600">
-            For eBay, Etsy and Upwork sellers &amp; freelancers across East Africa.
-            Verified expertise that gets your account approved — and your money
-            flowing.
+            For freelancers, agencies and online businesses worldwide. We handle
+            Payoneer verification, Stripe account onboarding and global receiving
+            accounts — so your money keeps flowing.
           </p>
 
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
@@ -62,8 +62,8 @@ export function Hero({ stripePromo }: { stripePromo: StripeOnboardingPromoState 
                   <BadgeCheck className="h-6 w-6" />
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-navy-900">Payoneer Account</p>
-                  <p className="text-xs text-navy-500">Personal · Kenya</p>
+                  <p className="text-sm font-semibold text-navy-900">Payment Account</p>
+                  <p className="text-xs text-navy-500">Payoneer · Stripe</p>
                 </div>
               </div>
               <span className="rounded-full bg-brand-50 px-3 py-1 text-xs font-semibold text-brand-700">

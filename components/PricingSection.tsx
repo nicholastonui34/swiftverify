@@ -1,25 +1,7 @@
-import { stripeServices, type StripeService } from "@/lib/pricing";
+import { stripeServices, withLiveStripeOnboardingPromo } from "@/lib/pricing";
 import type { StripeOnboardingPromoState } from "@/lib/stripe-checkout";
 import { PromoBanner } from "./PromoBanner";
 import { PricingCard } from "./PricingCard";
-
-/** Applies the live "first 20 accounts" promo state to the Stripe Onboarding
- *  card so displayed pricing always matches what checkout will actually charge. */
-function withLivePromo(
-  service: StripeService,
-  promo: StripeOnboardingPromoState
-): StripeService {
-  if (service.slug !== "stripe-onboarding") return service;
-  if (promo.active) {
-    return { ...service, badge: `First ${promo.remaining} Spots Left` };
-  }
-  return {
-    ...service,
-    priceUSD: 150,
-    regularPriceUSD: undefined,
-    badge: "Standard Rate",
-  };
-}
 
 export function PricingSection({ promo }: { promo: StripeOnboardingPromoState }) {
   return (
@@ -43,7 +25,7 @@ export function PricingSection({ promo }: { promo: StripeOnboardingPromoState })
           {stripeServices.map((service) => (
             <PricingCard
               key={service.slug}
-              service={withLivePromo(service, promo)}
+              service={withLiveStripeOnboardingPromo(service, promo)}
               featured={service.slug === "stripe-onboarding"}
             />
           ))}

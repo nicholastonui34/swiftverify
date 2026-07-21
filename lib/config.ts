@@ -7,9 +7,9 @@
  */
 export const siteConfig = {
   name: "SwiftVerify",
-  tagline: "Get Your Payoneer Account Verified. Fast. Compliant.",
+  tagline: "Payoneer Verification & Stripe Account Setup. Fast. Compliant.",
   description:
-    "SwiftVerify helps East African freelancers and sellers get their Payoneer accounts verified and set up US/UK/Canada receiving accounts. 99% success rate.",
+    "SwiftVerify helps freelancers, agencies and online businesses get verified on Payoneer and Stripe, set up global receiving accounts, and accept payments worldwide. 99% success rate.",
   url: "https://swiftverify-alpha.vercel.app",
 
   // Social proof
