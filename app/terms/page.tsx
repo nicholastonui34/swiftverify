@@ -21,7 +21,8 @@ export default function TermsPage() {
       </p>
       <h2>Payments</h2>
       <p>
-        Payments are made via M-PESA and verified manually before work begins.
+        Payments can be made securely online by debit/credit card via Stripe
+        Checkout, or via M-PESA, with work beginning once payment is confirmed.
       </p>
       <h2>Contact</h2>
       <p>Reach us at {siteConfig.supportEmail} or on Telegram.</p>

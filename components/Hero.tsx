@@ -1,10 +1,9 @@
 import Link from "next/link";
 import { ArrowRight, ShieldCheck, Zap, BadgeCheck } from "lucide-react";
 import { siteConfig } from "@/lib/config";
-import type { PromoState } from "@/lib/content";
-import { formatKES } from "@/lib/utils";
+import type { StripeOnboardingPromoState } from "@/lib/stripe-checkout";
 
-export function Hero({ promo }: { promo: PromoState }) {
+export function Hero({ stripePromo }: { stripePromo: StripeOnboardingPromoState }) {
   return (
     <section className="relative overflow-hidden bg-white">
       <div className="bg-hero-radial absolute inset-0" aria-hidden />
@@ -45,13 +44,11 @@ export function Hero({ promo }: { promo: PromoState }) {
             </a>
           </div>
 
-          {promo.active && (
+          {stripePromo.active && (
             <p className="mt-5 text-sm font-medium text-navy-600">
-              🎉 First {promo.limit} signups this month get everything at{" "}
-              <span className="font-bold text-brand-600">
-                {formatKES(promo.promoPriceKES)}
-              </span>{" "}
-              — {promo.remaining} spots left.
+              🚀 First {stripePromo.limit} Stripe account setups this month at{" "}
+              <span className="font-bold text-brand-600">just $80</span> —{" "}
+              {stripePromo.remaining} spots left.
             </p>
           )}
         </div>
