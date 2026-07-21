@@ -1,7 +1,7 @@
 import { AnnouncementBanner } from "@/components/AnnouncementBanner";
 import { Navbar } from "@/components/Navbar";
 import { Hero } from "@/components/Hero";
-import { ServicesGrid } from "@/components/ServicesGrid";
+import { PricingSection } from "@/components/PricingSection";
 import { HowItWorks } from "@/components/HowItWorks";
 import { TestimonialsCarousel } from "@/components/TestimonialsCarousel";
 import Link from "next/link";
@@ -12,21 +12,22 @@ import { FloatingButtons } from "@/components/FloatingButtons";
 import { Faq } from "@/components/Faq";
 import { WhyUs } from "@/components/WhyUs";
 import { JsonLd } from "@/components/JsonLd";
-import { getServices, getTestimonials, getPromoState } from "@/lib/data";
+import { getTestimonials } from "@/lib/data";
 import { getSettings } from "@/lib/settings";
 import { getGuides } from "@/lib/guides";
+import { getStripeOnboardingPromoState } from "@/lib/stripe-checkout";
+import { stripeServices } from "@/lib/pricing";
 import { tips as defaultTips, faqs } from "@/lib/content";
-import { organizationLd, websiteLd, servicesLd } from "@/lib/seo";
+import { organizationLd, websiteLd, stripeServicesLd } from "@/lib/seo";
 
 // Always render fresh so promo counts and new testimonials show immediately.
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
-  const [services, testimonials, promo, settings] = await Promise.all([
-    getServices(),
+  const [testimonials, settings, stripePromo] = await Promise.all([
     getTestimonials(),
-    getPromoState(),
     getSettings(),
+    getStripeOnboardingPromoState(),
   ]);
 
   // Admin's "current tip" leads the rotation when set.
@@ -36,12 +37,12 @@ export default async function Home() {
 
   return (
     <>
-      <JsonLd data={[organizationLd(), websiteLd(), servicesLd(services)]} />
+      <JsonLd data={[organizationLd(), websiteLd(), stripeServicesLd(stripeServices)]} />
       <AnnouncementBanner tips={tips} />
       <Navbar />
       <main className="flex-1">
-        <Hero promo={promo} />
-        <ServicesGrid services={services} promo={promo} />
+        <Hero stripePromo={stripePromo} />
+        <PricingSection promo={stripePromo} />
         <HowItWorks />
         <WhyUs />
         <TestimonialsCarousel testimonials={testimonials} />

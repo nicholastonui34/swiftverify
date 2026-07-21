@@ -173,6 +173,76 @@ export async function sendOrderCompleted(params: {
   });
 }
 
+// ---- Stripe checkout (USD services) ---------------------------------------
+
+export async function sendStripeOrderConfirmation(params: {
+  to: string;
+  name: string;
+  orderId: string;
+  serviceName: string;
+  amountUSD: number;
+  receiptUrl?: string | null;
+}) {
+  await sendEmail({
+    to: params.to,
+    subject: `Payment received — ${params.serviceName}`,
+    body: `Hi ${params.name},\n\nThank you for choosing ${siteConfig.name}. Your payment of $${params.amountUSD.toFixed(
+      2
+    )} for ${params.serviceName} (order #${params.orderId.slice(
+      -8
+    )}) has been received successfully. Our team will begin processing your order shortly.\n\nNext steps: we'll reach out by email with any documents or details we need from you.${
+      params.receiptUrl ? "\n\nYour Stripe receipt is linked below." : ""
+    }\n\n— ${siteConfig.name}`,
+    cta: params.receiptUrl ? { label: "View receipt", url: params.receiptUrl } : undefined,
+  });
+}
+
+export async function sendStripeOrderAdminNotification(params: {
+  orderId: string;
+  clientName: string;
+  clientEmail: string;
+  serviceName: string;
+  amountUSD: number;
+}) {
+  await sendEmail({
+    to: await adminRecipient(),
+    replyTo: params.clientEmail,
+    subject: `New paid order — ${params.serviceName} ($${params.amountUSD.toFixed(2)})`,
+    body: `${params.clientName} (${params.clientEmail}) just paid $${params.amountUSD.toFixed(
+      2
+    )} for ${params.serviceName} via Stripe.\nOrder #${params.orderId.slice(-8)}.`,
+  });
+}
+
+export async function sendStripePaymentFailedAdminNotification(params: {
+  orderId: string;
+  clientEmail: string;
+  serviceName: string;
+}) {
+  await sendEmail({
+    to: await adminRecipient(),
+    subject: `Payment failed — ${params.serviceName}`,
+    body: `A Stripe payment attempt failed for ${params.clientEmail} (${
+      params.serviceName
+    }).\nOrder #${params.orderId.slice(-8)}. No charge was made — the customer can try again.`,
+  });
+}
+
+export async function sendStripeRefundAdminNotification(params: {
+  orderId: string;
+  clientEmail: string;
+  serviceName: string;
+  amountUSD: number;
+}) {
+  await sendEmail({
+    to: await adminRecipient(),
+    subject: `Refund issued — ${params.serviceName}`,
+    body: `A $${params.amountUSD.toFixed(2)} refund was issued for ${params.clientEmail} (${
+      params.serviceName
+    }).\nOrder #${params.orderId.slice(-8)}.`,
+  });
+}
+
 // ---- HTML template --------------------------------------------------------
 
 function escapeHtml(s: string): string {

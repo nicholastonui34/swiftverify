@@ -1,5 +1,6 @@
 import { siteConfig } from "./config";
 import type { Service, Faq } from "./content";
+import type { StripeService } from "./pricing";
 import type { Guide } from "./guides";
 
 /** Canonical public origin, e.g. https://swiftverify-alpha.vercel.app (no trailing slash). */
@@ -57,6 +58,30 @@ export function servicesLd(services: Service[]) {
           price: s.priceKES,
           priceCurrency: "KES",
           url: absoluteUrl(`/order?service=${s.slug}`),
+        },
+      },
+    })),
+  };
+}
+
+export function stripeServicesLd(services: StripeService[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    itemListElement: services.map((s, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      item: {
+        "@type": "Service",
+        name: s.name,
+        description: s.description.join(" "),
+        provider: { "@type": "Organization", name: siteConfig.name, url: siteUrl },
+        areaServed: ["KE", "TZ", "UG", "US", "GB", "EU"],
+        offers: {
+          "@type": "Offer",
+          price: s.priceUSD ?? undefined,
+          priceCurrency: "USD",
+          url: s.checkoutEnabled ? absoluteUrl(`/checkout/${s.slug}`) : absoluteUrl("/#services"),
         },
       },
     })),

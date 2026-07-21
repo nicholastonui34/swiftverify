@@ -11,12 +11,13 @@ export default function RefundPage() {
       <p>
         This placeholder refund policy will be finalised before launch. If we are
         unable to deliver the service you paid for, you are entitled to a full
-        refund of your M-PESA payment.
+        refund of your payment.
       </p>
       <h2>Eligibility</h2>
       <p>
         Refunds apply where work has not yet started or where we cannot complete
-        the service. Refunds are processed to your original M-PESA number.
+        the service. Card payments made via Stripe are refunded to the original
+        card; M-PESA payments are refunded to your original M-PESA number.
       </p>
       <h2>How to request</h2>
       <p>

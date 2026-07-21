@@ -142,9 +142,9 @@ export const testimonials: Testimonial[] = [
 
 /** Rotating tips for the announcement banner (Phase 2: from Setting table). */
 export const tips: string[] = [
+  "🚀 Launch Offer: First 20 Stripe account setups are just $80 (with 3 months free support) — pay securely online by card.",
   "💡 Pro Tip: Some African banks process Payoneer withdrawals in hours, not days. Join our newsletter for the full 2026 guide.",
-  "🚀 New: US, UK & Canada receiving accounts now available — get paid by local bank transfer.",
-  "✅ 470+ sellers verified in 3 years. First 10 signups this month get the KES 1,250 promo rate.",
+  "✅ 470+ sellers verified in 3 years. Now offering Stripe onboarding assistance alongside Payoneer.",
   "📢 Getting your Payoneer flagged in Kenya? It's usually a document-format issue. We fix that.",
 ];
 
@@ -166,7 +166,7 @@ export const faqs: Faq[] = [
   {
     question: "How do I pay?",
     answer:
-      "Payment is via M-PESA Buy Goods (Till number shown at checkout). After paying, you upload your M-PESA confirmation and our team verifies it manually — no risky card details or third-party payment APIs.",
+      "You can pay securely online by debit or credit card via Stripe Checkout — payment is confirmed automatically. Prefer M-PESA? Use Buy Goods Till number 3561312 and forward your confirmation on WhatsApp instead.",
   },
   {
     question: "What if my account still isn't verified?",
@@ -198,8 +198,9 @@ export const howItWorks = [
   },
   {
     step: 2,
-    title: "Upload your M-PESA payment proof",
-    description: "Pay via M-PESA and upload the receipt. We verify it manually — no risky APIs.",
+    title: "Pay securely online",
+    description:
+      "Pay instantly by debit or credit card via Stripe Checkout, or via M-PESA if you prefer.",
   },
   {
     step: 3,
