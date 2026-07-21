@@ -95,22 +95,27 @@ export async function createStripeCheckout(
     return { error: "We couldn't start checkout. Please try again." };
   }
 
-  await db.stripeOrder.create({
-    data: {
-      serviceSlug: service.slug,
-      serviceName: service.name,
-      amountUSD: amountUSD * 100,
-      fullName,
-      businessName: businessName || null,
-      email,
-      phone,
-      country,
-      website: website || null,
-      notes: notes || null,
-      stripeSessionId: session.id,
-      status: "PENDING",
-    },
-  });
+  try {
+    await db.stripeOrder.create({
+      data: {
+        serviceSlug: service.slug,
+        serviceName: service.name,
+        amountUSD: amountUSD * 100,
+        fullName,
+        businessName: businessName || null,
+        email,
+        phone,
+        country,
+        website: website || null,
+        notes: notes || null,
+        stripeSessionId: session.id,
+        status: "PENDING",
+      },
+    });
+  } catch (err) {
+    console.error("[stripe] failed to record order before redirecting to checkout:", err);
+    return { error: "We couldn't start checkout. Please try again or use the M-PESA option." };
+  }
 
   redirect(session.url);
 }
