@@ -84,7 +84,7 @@ export type Testimonial = {
 
 export const testimonials: Testimonial[] = [
   {
-    authorName: "John D.",
+    authorName: "John Musyoka",
     country: "Kenya",
     service: "Personal Payoneer",
     rating: 5,
@@ -92,7 +92,7 @@ export const testimonials: Testimonial[] = [
     source: "TELEGRAM",
   },
   {
-    authorName: "Amina H.",
+    authorName: "Brian Obunga",
     country: "Tanzania",
     service: "USA Receiving Account",
     rating: 5,
@@ -100,7 +100,7 @@ export const testimonials: Testimonial[] = [
     source: "TELEGRAM",
   },
   {
-    authorName: "Samuel O.",
+    authorName: "Zack Maina",
     country: "Kenya",
     service: "Business Payoneer",
     rating: 5,
