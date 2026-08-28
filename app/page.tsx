@@ -3,10 +3,11 @@ import { Navbar } from "@/components/Navbar";
 import { Hero } from "@/components/Hero";
 import { PricingSection } from "@/components/PricingSection";
 import { HowItWorks } from "@/components/HowItWorks";
+import { TestimonialsCarousel } from "@/components/TestimonialsCarousel";
 import { Footer } from "@/components/Footer";
 import { FloatingButtons } from "@/components/FloatingButtons";
 import { JsonLd } from "@/components/JsonLd";
-import { services } from "@/lib/content";
+import { services, testimonials as staticTestimonials } from "@/lib/content";
 import { organizationLd, websiteLd, servicesLd } from "@/lib/seo";
 import { quoteMessage, whatsappLink } from "@/lib/config";
 
@@ -31,6 +32,7 @@ export default function Home() {
 
         <PricingSection />
         <HowItWorks />
+        <TestimonialsCarousel testimonials={staticTestimonials.slice(0, 3)} />
         <ResourceLinks />
 
         <section className="bg-[#f5f7f4] px-5 py-16 sm:px-8 sm:py-20">

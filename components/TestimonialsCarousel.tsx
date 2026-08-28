@@ -1,9 +1,5 @@
-"use client";
-
-import { useEffect, useState, useCallback } from "react";
-import { ChevronLeft, ChevronRight, Star, Quote } from "lucide-react";
+import { Quote, Star } from "lucide-react";
 import type { Testimonial } from "@/lib/content";
-import { siteConfig } from "@/lib/config";
 
 function initials(name: string) {
   return name
@@ -11,120 +7,45 @@ function initials(name: string) {
     .split(" ")
     .filter(Boolean)
     .slice(0, 2)
-    .map((n) => n[0])
+    .map((part) => part[0])
     .join("")
     .toUpperCase();
 }
 
-export function TestimonialsCarousel({
-  testimonials,
-}: {
-  testimonials: Testimonial[];
-}) {
-  const [index, setIndex] = useState(0);
-  const count = testimonials.length;
-
-  const go = useCallback(
-    (dir: number) => setIndex((i) => (i + dir + count) % count),
-    [count]
-  );
-
-  useEffect(() => {
-    const id = setInterval(() => setIndex((i) => (i + 1) % count), 5000);
-    return () => clearInterval(id);
-  }, [count]);
-
-  if (count === 0) return null;
-  const t = testimonials[index % count];
+export function TestimonialsCarousel({ testimonials }: { testimonials: Testimonial[] }) {
+  if (testimonials.length === 0) return null;
 
   return (
-    <section id="testimonials" className="scroll-mt-20 bg-navy-800 py-20 text-white">
-      <div className="mx-auto max-w-4xl px-4 text-center sm:px-6">
-        <h2 className="font-display text-3xl font-bold tracking-tight sm:text-4xl">
-          Trusted by sellers across East Africa
-        </h2>
-        <p className="mt-4 text-lg text-navy-100">
-          Real results from real freelancers and sellers.
-        </p>
-
-        <div className="relative mt-12">
-          <Quote className="mx-auto h-10 w-10 text-brand-400" />
-
-          <blockquote
-            key={index}
-            className="mx-auto mt-6 max-w-2xl animate-[fadeUp_0.5s_ease] text-xl font-medium leading-relaxed text-white sm:text-2xl"
-          >
-            “{t.review}”
-          </blockquote>
-
-          <div className="mt-8 flex items-center justify-center gap-1">
-            {Array.from({ length: 5 }).map((_, i) => (
-              <Star
-                key={i}
-                className={
-                  i < t.rating ? "h-5 w-5 fill-brand-400 text-brand-400" : "h-5 w-5 text-navy-600"
-                }
-              />
-            ))}
+    <section id="testimonials" className="bg-[#f5f7f4] px-5 py-16 sm:px-8 sm:py-20">
+      <div className="mx-auto max-w-7xl">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+          <div className="max-w-2xl">
+            <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#14845e]">Client notes</p>
+            <h2 className="mt-3 font-display text-3xl font-semibold tracking-[-0.04em] text-[#081624] sm:text-4xl">Clear guidance makes the process feel lighter.</h2>
           </div>
-
-          <div className="mt-5 flex items-center justify-center gap-3">
-            <div className="grid h-11 w-11 place-items-center rounded-full bg-gradient-to-br from-brand-400 to-sky-brand text-sm font-bold text-navy-900">
-              {initials(t.authorName)}
-            </div>
-            <div className="text-left">
-              <p className="font-semibold">{t.authorName}</p>
-              <p className="text-sm text-navy-100">
-                {t.country} · {t.service}
-              </p>
-            </div>
-          </div>
-
-          {/* Controls */}
-          <div className="mt-10 flex items-center justify-center gap-4">
-            <button
-              type="button"
-              onClick={() => go(-1)}
-              aria-label="Previous review"
-              className="grid h-10 w-10 place-items-center rounded-full border border-navy-600 text-white transition-colors hover:bg-navy-700"
-            >
-              <ChevronLeft className="h-5 w-5" />
-            </button>
-            <div className="flex gap-2">
-              {testimonials.map((_, i) => (
-                <button
-                  key={i}
-                  type="button"
-                  aria-label={`Go to review ${i + 1}`}
-                  onClick={() => setIndex(i)}
-                  className={`h-2 rounded-full transition-all ${
-                    i === index ? "w-6 bg-brand-400" : "w-2 bg-navy-600 hover:bg-navy-500"
-                  }`}
-                />
-              ))}
-            </div>
-            <button
-              type="button"
-              onClick={() => go(1)}
-              aria-label="Next review"
-              className="grid h-10 w-10 place-items-center rounded-full border border-navy-600 text-white transition-colors hover:bg-navy-700"
-            >
-              <ChevronRight className="h-5 w-5" />
-            </button>
-          </div>
+          <p className="max-w-sm text-sm leading-6 text-slate-500">A few words from clients who wanted a clearer route through verification.</p>
         </div>
 
-        <a
-          href={siteConfig.telegram}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="mt-10 inline-flex items-center justify-center rounded-full bg-white px-6 py-3 text-sm font-semibold text-navy-900 transition-colors hover:bg-navy-50"
-        >
-          Submit your review
-        </a>
+        <div className="mt-8 grid gap-4 md:grid-cols-3">
+          {testimonials.slice(0, 3).map((testimonial) => (
+            <article key={`${testimonial.authorName}-${testimonial.service}`} className="flex flex-col rounded-[1.25rem] border border-slate-200 bg-white p-5 shadow-[0_10px_30px_rgba(8,22,36,0.04)]">
+              <Quote className="h-5 w-5 text-[#55c99b]" aria-hidden="true" />
+              <blockquote className="mt-4 flex-1 text-sm leading-6 text-[#294052]">“{testimonial.review}”</blockquote>
+              <div className="mt-6 flex items-center gap-3 border-t border-slate-100 pt-4">
+                <div className="grid h-9 w-9 place-items-center rounded-full bg-[#d9f5e8] text-xs font-bold text-[#106a4e]">{initials(testimonial.authorName)}</div>
+                <div>
+                  <p className="text-sm font-bold text-[#081624]">{testimonial.authorName}</p>
+                  <p className="text-xs text-slate-500">{testimonial.country} · {testimonial.service}</p>
+                </div>
+                <div className="ml-auto flex gap-0.5" aria-label={`${testimonial.rating} out of 5 stars`}>
+                  {Array.from({ length: testimonial.rating }).map((_, index) => <Star key={index} className="h-3.5 w-3.5 fill-[#f2b94b] text-[#f2b94b]" aria-hidden="true" />)}
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+        <p className="mt-5 text-xs text-slate-400">Individual results depend on provider requirements, eligibility and the information submitted.</p>
       </div>
-
-      <style>{`@keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }`}</style>
     </section>
   );
 }
