@@ -1,17 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import { Logo } from "./Logo";
 import { quoteMessage, whatsappLink } from "@/lib/config";
 
 const navLinks = [
   { href: "/#services", label: "Services" },
-  { href: "/documents", label: "Documents" },
   { href: "/#how-it-works", label: "How it works" },
-  { href: "/guides", label: "Guides" },
-  { href: "/#faq", label: "FAQ" },
+  { href: "/faq", label: "FAQ" },
 ];
 
 export function Navbar() {
@@ -36,9 +33,6 @@ export function Navbar() {
         </div>
 
         <div className="hidden items-center gap-4 lg:flex">
-          <Link href="/track" className="text-sm font-medium text-slate-300 transition-colors hover:text-white">
-            Track order
-          </Link>
           <a
             href={whatsappLink(quoteMessage)}
             target="_blank"
@@ -73,9 +67,6 @@ export function Navbar() {
                 {l.label}
               </a>
             ))}
-            <Link href="/track" onClick={close} className="block rounded-xl px-3 py-3 text-base font-medium text-slate-200 hover:bg-white/10">
-              Track order
-            </Link>
             <a
               href={whatsappLink(quoteMessage)}
               target="_blank"
