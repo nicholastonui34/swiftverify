@@ -1,4 +1,4 @@
-import { ArrowUpRight, Check, FileText, HelpCircle, LibraryBig } from "lucide-react";
+import { ArrowUpRight, FileText, HelpCircle, LibraryBig } from "lucide-react";
 import { Navbar } from "@/components/Navbar";
 import { Hero } from "@/components/Hero";
 import { PricingSection } from "@/components/PricingSection";
@@ -75,7 +75,6 @@ function ResourceLinks() {
             </a>
           ))}
         </div>
-        <div className="mt-6 flex items-center gap-2 text-sm text-slate-500"><Check className="h-4 w-4 text-[#14845e]" /> The homepage stays focused; detailed reading lives on its own page.</div>
       </div>
     </section>
   );
