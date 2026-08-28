@@ -8,22 +8,11 @@ export default function RefundPage() {
   return (
     <LegalShell title="Refund Policy">
       <p className="text-sm text-navy-400">Last updated: {new Date().getFullYear()}</p>
-      <p>
-        This placeholder refund policy will be finalised before launch. If we are
-        unable to deliver the service you paid for, you are entitled to a full
-        refund of your payment.
-      </p>
-      <h2>Eligibility</h2>
-      <p>
-        Refunds apply where work has not yet started or where we cannot complete
-        the service. Card payments made via Stripe are refunded to the original
-        card; M-PESA payments are refunded to your original M-PESA number.
-      </p>
-      <h2>How to request</h2>
-      <p>
-        Contact us at {siteConfig.supportEmail} or on Telegram with your order
-        details.
-      </p>
+      <p>SwiftVerify now handles new enquiries through case-by-case quotes rather than a public self-serve checkout. Because payment and delivery terms can vary by engagement, the applicable refund arrangement is confirmed in writing with each client before work begins.</p>
+      <h2>Policy status</h2>
+      <p>The historical fixed-price online checkout wording on this page has been retired. SwiftVerify&apos;s final standard refund terms are pending confirmation and should be reviewed with our team before you proceed with any paid engagement.</p>
+      <h2>How to ask about a refund</h2>
+      <p>Contact {siteConfig.supportEmail} or message us through WhatsApp or Telegram with your engagement details. Please do not send payment or sensitive documents until the scope, payment terms and refund arrangement are clear.</p>
     </LegalShell>
   );
 }

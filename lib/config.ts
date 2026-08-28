@@ -1,15 +1,8 @@
-/**
- * Site-wide configuration.
- *
- * In Phase 2+ the promo count, tips and M-PESA number move to the `Setting`
- * table (see prisma/schema.prisma) and the admin dashboard. For Phase 1 they
- * live here so the landing page renders with zero infrastructure.
- */
 export const siteConfig = {
   name: "SwiftVerify",
-  tagline: "Payoneer Verification & Stripe Account Setup. Fast. Compliant.",
+  tagline: "Payment Gateway Verification & Compliance Consultancy. Fast. Compliant.",
   description:
-    "SwiftVerify helps freelancers, agencies and online businesses get verified on Payoneer and Stripe, set up global receiving accounts, and accept payments worldwide. 99% success rate.",
+    "SwiftVerify is a payment gateway verification and compliance consultancy for freelancers, agencies and online businesses. Get expert guidance for Payoneer, Stripe, PayPal, Wise, Grey, Square and Mercury.",
   url: "https://swiftverify-alpha.vercel.app",
 
   // Social proof
@@ -22,19 +15,21 @@ export const siteConfig = {
   telegram: "https://t.me/swiftverifydotcom",
   supportEmail: "support@swiftverify.co.ke",
 
-  // M-PESA Buy Goods / Till (configurable in admin Settings in Phase 3)
+  // Legacy payment configuration retained for existing order history/admin tools.
   mpesaTill: "3561312",
   mpesaMerchantName: "NICHOLAS TONUI",
-
-  // Crypto payment options (configurable in admin Settings)
   usdtTrc20Address: "TW5aWQhPp2QZimRYMjAkaAURykbxZRRoPc",
   binancePayId: "820002132",
-
-  // Promo funnel: first N clients get the promo price
   promoLimit: 10,
-  promoUsed: 3, // Phase 2: read live count from PromoTracker
+  promoUsed: 3,
   promoPriceKES: 1250,
 } as const;
 
 export const promoActive = siteConfig.promoUsed < siteConfig.promoLimit;
 export const promoRemaining = Math.max(siteConfig.promoLimit - siteConfig.promoUsed, 0);
+
+export const quoteMessage = "Hi SwiftVerify! I'd like a quote for payment gateway verification.";
+
+export function whatsappLink(message = quoteMessage) {
+  return `${siteConfig.whatsapp}?text=${encodeURIComponent(message)}`;
+}

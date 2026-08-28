@@ -5,7 +5,7 @@ import { siteUrl } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: {
-    default: `${siteConfig.name} — Payoneer Verification & Stripe Account Setup`,
+    default: `${siteConfig.name} — Payment Gateway Verification & Compliance Consultancy`,
     template: `%s — ${siteConfig.name}`,
   },
   description: siteConfig.description,
@@ -16,13 +16,18 @@ export const metadata: Metadata = {
     "Payoneer account setup",
     "Stripe account setup",
     "Stripe onboarding assistance",
+    "PayPal account setup",
+    "Wise business account Kenya",
+    "Grey virtual account Africa",
+    "Square merchant account",
+    "Mercury bank account setup",
+    "payment gateway consultancy",
     "US receiving account",
     "freelancer payments",
     "online business payment onboarding",
-    "M-PESA Payoneer",
   ],
   openGraph: {
-    title: `${siteConfig.name} — Payoneer & Stripe Account Setup`,
+    title: `${siteConfig.name} — Payment Gateway Verification & Compliance`,
     description: siteConfig.description,
     url: siteUrl,
     siteName: siteConfig.name,
@@ -31,7 +36,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: `${siteConfig.name} — Payoneer & Stripe Account Setup`,
+    title: `${siteConfig.name} — Payment Gateway Verification & Compliance`,
     description: siteConfig.description,
   },
   icons: { icon: "/logo-mark.svg" },

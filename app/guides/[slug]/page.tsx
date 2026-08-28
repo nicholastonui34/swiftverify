@@ -1,14 +1,14 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { ArrowLeft, Clock, ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, Clock } from "lucide-react";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { FloatingButtons } from "@/components/FloatingButtons";
 import { GuideContent } from "@/components/GuideContent";
 import { JsonLd } from "@/components/JsonLd";
 import { getGuides, getGuideBySlug } from "@/lib/guides";
-import { services } from "@/lib/content";
+import { whatsappLink } from "@/lib/config";
 import { articleLd, breadcrumbLd } from "@/lib/seo";
 
 export function generateStaticParams() {
@@ -48,10 +48,7 @@ export default async function GuidePage({
   const guide = getGuideBySlug(slug);
   if (!guide) notFound();
 
-  const ctaService = guide.ctaServiceSlug
-    ? services.find((s) => s.slug === guide.ctaServiceSlug)
-    : undefined;
-  const orderHref = ctaService ? `/order?service=${ctaService.slug}` : "/order";
+  const quoteHref = whatsappLink(`Hi SwiftVerify! I read your guide on ${guide.title} and I'd like a quote.`);
 
   return (
     <>
@@ -94,22 +91,13 @@ export default async function GuidePage({
             <GuideContent blocks={guide.content} />
           </div>
 
-          {/* End CTA */}
-          <div className="mt-12 rounded-2xl border border-brand-200 bg-brand-50 p-6 sm:p-8">
-            <h2 className="font-display text-xl font-bold text-navy-900">
-              Want us to handle it for you?
-            </h2>
-            <p className="mt-2 text-navy-700">
-              {ctaService
-                ? `Our ${ctaService.name} gets your documents formatted and your account through verification — done right the first time.`
-                : "Our team gets your documents formatted and your account through verification — done right the first time."}
-            </p>
-            <Link
-              href={orderHref}
-              className="mt-5 inline-flex items-center gap-2 rounded-full bg-brand-500 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-600"
-            >
-              Get started <ArrowRight className="h-4 w-4" />
-            </Link>
+          <div className="mt-12 rounded-[1.5rem] border border-[#c9ded3] bg-[#f4fcf8] p-6 sm:p-8">
+            <p className="text-xs font-bold uppercase tracking-[0.16em] text-[#14845e]">Ready for the next step?</p>
+            <h2 className="mt-3 font-display text-2xl font-semibold text-[#081624]">Bring your case to our team.</h2>
+            <p className="mt-2 text-slate-600">Tell us what you are working toward and we will scope a practical, compliant path for your gateway.</p>
+            <a href={quoteHref} target="_blank" rel="noopener noreferrer" className="mt-5 inline-flex items-center gap-2 rounded-full bg-[#081624] px-6 py-3 text-sm font-bold text-white transition-all hover:-translate-y-0.5 hover:bg-[#102335]">
+              Get a custom quote <ArrowUpRight className="h-4 w-4" />
+            </a>
           </div>
         </article>
       </main>

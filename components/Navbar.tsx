@@ -4,10 +4,11 @@ import { useState } from "react";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import { Logo } from "./Logo";
-import { siteConfig } from "@/lib/config";
+import { quoteMessage, whatsappLink } from "@/lib/config";
 
 const navLinks = [
   { href: "/#services", label: "Services" },
+  { href: "/documents", label: "Documents" },
   { href: "/#how-it-works", label: "How it works" },
   { href: "/guides", label: "Guides" },
   { href: "/#faq", label: "FAQ" },
@@ -15,98 +16,75 @@ const navLinks = [
 
 export function Navbar() {
   const [open, setOpen] = useState(false);
+  const close = () => setOpen(false);
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-navy-100/70 bg-white/80 backdrop-blur-md">
-      <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
-        <Logo />
+    <header className="sticky top-0 z-40 w-full border-b border-white/10 bg-[#081624]/90 backdrop-blur-xl">
+      <nav className="mx-auto flex h-[76px] max-w-7xl items-center justify-between px-5 sm:px-8">
+        <Logo light />
 
-        <div className="hidden items-center gap-8 md:flex">
+        <div className="hidden items-center gap-7 lg:flex">
           {navLinks.map((l) => (
             <a
               key={l.href}
               href={l.href}
-              className="text-sm font-medium text-navy-600 transition-colors hover:text-navy-900"
+              className="text-sm font-medium text-slate-300 transition-colors hover:text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-300"
             >
               {l.label}
             </a>
           ))}
         </div>
 
-        <div className="hidden items-center gap-3 md:flex">
-          <Link
-            href="/track"
-            className="text-sm font-medium text-navy-600 transition-colors hover:text-navy-900"
-          >
+        <div className="hidden items-center gap-4 lg:flex">
+          <Link href="/track" className="text-sm font-medium text-slate-300 transition-colors hover:text-white">
             Track order
           </Link>
-          <Link
-            href="/login"
-            className="text-sm font-medium text-navy-600 transition-colors hover:text-navy-900"
-          >
-            Sign in
-          </Link>
           <a
-            href={siteConfig.telegram}
+            href={whatsappLink(quoteMessage)}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-sm font-medium text-navy-600 transition-colors hover:text-navy-900"
+            className="inline-flex items-center justify-center rounded-full bg-brand-400 px-5 py-2.5 text-sm font-bold text-[#081624] shadow-[0_0_24px_rgba(94,231,180,0.2)] transition-all hover:-translate-y-0.5 hover:bg-brand-300"
           >
-            Telegram
+            Get a quote
           </a>
-          <Link
-            href="/order"
-            className="rounded-full bg-brand-500 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-brand-600"
-          >
-            Place Order
-          </Link>
         </div>
 
         <button
           type="button"
           onClick={() => setOpen((v) => !v)}
-          className="inline-flex items-center justify-center rounded-lg p-2 text-navy-800 md:hidden"
+          className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg border border-white/10 text-slate-200 transition-colors hover:bg-white/10 lg:hidden"
           aria-label={open ? "Close menu" : "Open menu"}
           aria-expanded={open}
         >
-          {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </button>
       </nav>
 
       {open && (
-        <div className="border-t border-navy-100 bg-white md:hidden">
-          <div className="space-y-1 px-4 py-4">
+        <div className="border-t border-white/10 bg-[#081624] lg:hidden">
+          <div className="space-y-1 px-5 py-4 sm:px-8">
             {navLinks.map((l) => (
               <a
                 key={l.href}
                 href={l.href}
-                onClick={() => setOpen(false)}
-                className="block rounded-lg px-3 py-2.5 text-base font-medium text-navy-700 hover:bg-navy-50"
+                onClick={close}
+                className="block rounded-xl px-3 py-3 text-base font-medium text-slate-200 hover:bg-white/10"
               >
                 {l.label}
               </a>
             ))}
-            <Link
-              href="/track"
-              onClick={() => setOpen(false)}
-              className="block rounded-lg px-3 py-2.5 text-base font-medium text-navy-700 hover:bg-navy-50"
-            >
+            <Link href="/track" onClick={close} className="block rounded-xl px-3 py-3 text-base font-medium text-slate-200 hover:bg-white/10">
               Track order
             </Link>
-            <Link
-              href="/login"
-              onClick={() => setOpen(false)}
-              className="block rounded-lg px-3 py-2.5 text-base font-medium text-navy-700 hover:bg-navy-50"
+            <a
+              href={whatsappLink(quoteMessage)}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={close}
+              className="mt-2 block rounded-full bg-brand-400 px-5 py-3 text-center text-base font-bold text-[#081624]"
             >
-              Sign in
-            </Link>
-            <Link
-              href="/order"
-              onClick={() => setOpen(false)}
-              className="mt-2 block rounded-full bg-brand-500 px-5 py-3 text-center text-base font-semibold text-white"
-            >
-              Place Order
-            </Link>
+              Get a quote
+            </a>
           </div>
         </div>
       )}

@@ -52,13 +52,7 @@ export function servicesLd(services: Service[]) {
         name: s.name,
         description: s.description,
         provider: { "@type": "Organization", name: siteConfig.name, url: siteUrl },
-        areaServed: ["KE", "TZ", "UG"],
-        offers: {
-          "@type": "Offer",
-          price: s.priceKES,
-          priceCurrency: "KES",
-          url: absoluteUrl(`/order?service=${s.slug}`),
-        },
+        areaServed: ["KE", "TZ", "UG", "RW", "BI", "SS", "ET", "SO", "US", "GB", "CA", "EU"],
       },
     })),
   };
@@ -76,13 +70,7 @@ export function stripeServicesLd(services: StripeService[]) {
         name: s.name,
         description: s.description.join(" "),
         provider: { "@type": "Organization", name: siteConfig.name, url: siteUrl },
-        areaServed: ["KE", "TZ", "UG", "US", "GB", "EU"],
-        offers: {
-          "@type": "Offer",
-          price: s.priceUSD ?? undefined,
-          priceCurrency: "USD",
-          url: s.checkoutEnabled ? absoluteUrl(`/checkout/${s.slug}`) : absoluteUrl("/#services"),
-        },
+        areaServed: ["KE", "TZ", "UG", "RW", "BI", "SS", "ET", "SO", "US", "GB", "CA", "EU"],
       },
     })),
   };
