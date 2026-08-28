@@ -33,11 +33,20 @@ export const metadata: Metadata = {
     siteName: siteConfig.name,
     locale: "en_KE",
     type: "website",
+    images: [
+      {
+        url: "/swiftverify-og.png",
+        width: 1200,
+        height: 630,
+        alt: "SwiftVerify payment gateway verification and compliance consultancy",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: `${siteConfig.name} — Payment Gateway Verification & Compliance`,
     description: siteConfig.description,
+    images: ["/swiftverify-og.png"],
   },
   icons: { icon: "/logo-mark.svg" },
 };
