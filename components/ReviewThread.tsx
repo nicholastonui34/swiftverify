@@ -1,0 +1,19 @@
+"use client";
+
+import { FormEvent, useEffect, useState } from "react";
+import { CornerDownRight, MessageCircle, Share2 } from "lucide-react";
+
+type Comment = { id: string; parentId: string | null; authorName: string; body: string; createdAt: string };
+const pageUrl = "https://swiftverify-alpha.vercel.app/reviews";
+
+export function ReviewThread({ reviewId }: { reviewId: string }) {
+  const [comments, setComments] = useState<Comment[]>([]);
+  const [replyTo, setReplyTo] = useState<string | null>(null);
+  const [status, setStatus] = useState("");
+  const load = () => fetch(`/api/reviews/${reviewId}/comments`, { cache: "no-store" }).then((response) => response.ok ? response.json() : null).then((data) => data && setComments(data.comments)).catch(() => undefined);
+  useEffect(() => { load(); }, [reviewId]);
+  async function submit(event: FormEvent<HTMLFormElement>) { event.preventDefault(); const form = event.currentTarget; const data = new FormData(form); setStatus("Posting..."); const response = await fetch(`/api/reviews/${reviewId}/comments`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ authorName: data.get("authorName"), body: data.get("body"), parentId: replyTo }) }); const result = await response.json(); setStatus(result.message || result.error); if (response.ok) { form.reset(); setReplyTo(null); load(); } }
+  function share() { window.open(`https://wa.me/?text=${encodeURIComponent(`Join the discussion on this SwiftVerify review: ${pageUrl}#review-${reviewId}`)}`, "_blank", "noopener,noreferrer"); }
+  const roots = comments.filter((comment) => !comment.parentId);
+  return <div className="mt-6 border-t border-slate-100 pt-5"><div className="flex items-center justify-between gap-3"><p className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.14em] text-[#14845e]"><MessageCircle className="h-4 w-4" /> Discussion ({comments.length})</p><button type="button" onClick={share} className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-500 hover:text-[#14845e]"><Share2 className="h-3.5 w-3.5" /> Share thread</button></div><div className="mt-4 space-y-3">{roots.map((comment) => <div key={comment.id}><div className="rounded-xl bg-[#f5f7f4] p-3"><p className="text-xs font-bold text-[#081624]">{comment.authorName}</p><p className="mt-1 text-sm leading-6 text-slate-600">{comment.body}</p><button type="button" onClick={() => setReplyTo(comment.id)} className="mt-2 text-xs font-bold text-[#14845e]">Reply</button></div>{comments.filter((reply) => reply.parentId === comment.id).map((reply) => <div key={reply.id} className="ml-5 mt-2 flex gap-2 rounded-xl border-l-2 border-[#c9ded3] bg-white p-3"><CornerDownRight className="mt-0.5 h-4 w-4 shrink-0 text-[#14845e]" /><div><p className="text-xs font-bold text-[#081624]">{reply.authorName}</p><p className="mt-1 text-sm leading-6 text-slate-600">{reply.body}</p></div></div>)}</div>)}</div><form onSubmit={submit} className="mt-4 grid gap-2 sm:grid-cols-[0.7fr_1.3fr_auto]"><input required name="authorName" placeholder="Your name" className="min-h-10 rounded-lg border border-slate-200 px-3 text-sm outline-none focus:border-[#14845e]" /><input required name="body" placeholder={replyTo ? "Write a reply..." : "Join the discussion..."} className="min-h-10 rounded-lg border border-slate-200 px-3 text-sm outline-none focus:border-[#14845e]" /><button type="submit" className="min-h-10 rounded-lg bg-[#081624] px-4 text-xs font-bold text-white hover:bg-[#14845e]">{replyTo ? "Reply" : "Comment"}</button></form>{replyTo && <button type="button" onClick={() => setReplyTo(null)} className="mt-2 text-xs text-slate-500 underline">Cancel reply</button>}{status && <p role="status" className="mt-2 text-xs text-slate-500">{status}</p>}</div>;
+}
