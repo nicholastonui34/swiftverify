@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { ArrowUpRight, Check, Globe2, ShieldCheck, Sparkles } from "lucide-react";
+import { ArrowUpRight, BadgeCheck, Check, ShieldCheck, Sparkles, Workflow } from "lucide-react";
 import Image from "next/image";
+import { siteConfig } from "@/lib/config";
 import { ConsultationButton } from "./ConsultationModal";
 
 export function Hero() {
@@ -70,9 +71,15 @@ export function Hero() {
               Explore services
             </a>
           </div>
-          <div className="mt-10 flex flex-wrap gap-x-6 gap-y-3 text-sm text-slate-400">
-            <span className="inline-flex items-center gap-2"><ShieldCheck className="h-4 w-4 text-brand-300" /> Ethical, lawful guidance</span>
-            <span className="inline-flex items-center gap-2"><Globe2 className="h-4 w-4 text-brand-300" /> Built for global work</span>
+          <div className="mt-9 grid max-w-xl grid-cols-2 gap-3 border-y border-white/10 py-5 sm:grid-cols-3">
+            <div className="border-r border-white/10 pr-3"><p className="font-display text-2xl font-bold text-white">{siteConfig.sellersVerified}+</p><p className="mt-1 text-xs leading-5 text-slate-400">clients supported</p></div>
+            <div className="border-r border-white/10 pr-3 sm:pl-3"><p className="font-display text-2xl font-bold text-white">{siteConfig.yearsActive} yrs</p><p className="mt-1 text-xs leading-5 text-slate-400">practical experience</p></div>
+            <div className="col-span-2 sm:col-span-1 sm:pl-3"><p className="font-display text-2xl font-bold text-white">7</p><p className="mt-1 text-xs leading-5 text-slate-400">global payment gateways</p></div>
+          </div>
+          <div className="mt-5 flex flex-wrap gap-x-5 gap-y-3 text-xs font-semibold text-slate-300">
+            <span className="inline-flex items-center gap-2"><BadgeCheck className="h-4 w-4 text-brand-300" /> Authentic documents only</span>
+            <span className="inline-flex items-center gap-2"><ShieldCheck className="h-4 w-4 text-brand-300" /> Privacy-aware guidance</span>
+            <span className="inline-flex items-center gap-2"><Workflow className="h-4 w-4 text-brand-300" /> Direct WhatsApp support</span>
           </div>
         </div>
         <div className="relative mx-auto w-full max-w-[500px] lg:mx-0 lg:justify-self-end">
