@@ -61,7 +61,7 @@ export function Hero() {
             Build your global work life<span className="text-brand-300"> with clarity.</span>
           </h1>
           <p className="mt-6 max-w-xl text-[1.05rem] leading-7 text-slate-200 drop-shadow-[0_2px_10px_rgba(0,0,0,0.4)] sm:mt-7 sm:text-lg sm:leading-8">
-            Practical consulting for Kenyan freelancers building remote careers, international payments, compliant business structures, and privacy-aware digital workflows.
+            Helping Kenyan freelancers and online businesses navigate remote work, PayPal, Payoneer, Stripe, and global payment platforms with practical, compliant guidance.
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:mt-9 sm:flex-row">
             <ConsultationButton className="group inline-flex min-h-13 items-center justify-center gap-2 rounded-full bg-brand-300 px-6 text-base font-bold text-[#06131f] shadow-[0_10px_30px_rgba(94,231,180,0.2)] ring-1 ring-brand-200/40 transition-all hover:-translate-y-0.5 hover:bg-white hover:shadow-[0_12px_34px_rgba(255,255,255,0.16)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#081624]">
