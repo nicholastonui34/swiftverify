@@ -11,7 +11,7 @@ export default async function ReviewsPage() {
   let initialReviews: Array<{ id: string; authorName: string; country: string; service: string; rating: number; review: string; createdAt: string }> = [];
   if (isDbConfigured) {
     try {
-      const rows = await db.testimonial.findMany({ where: { isActive: true }, orderBy: { createdAt: "desc" }, take: 100, select: { id: true, authorName: true, country: true, service: true, rating: true, review: true, createdAt: true } });
+      const rows = await db.testimonial.findMany({ where: { isActive: true, source: "REVIEWS_CENTER" }, orderBy: { createdAt: "desc" }, take: 100, select: { id: true, authorName: true, country: true, service: true, rating: true, review: true, createdAt: true } });
       initialReviews = rows.map((row) => ({ ...row, createdAt: row.createdAt.toISOString() }));
     } catch { /* The client refresh will retry through the API. */ }
   }
