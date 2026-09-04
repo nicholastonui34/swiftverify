@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { ArrowUpRight, Check, Globe2, ShieldCheck, Sparkles } from "lucide-react";
 import Image from "next/image";
 import { ConsultationButton } from "./ConsultationModal";
-import { HeroContactForm } from "./HeroContactForm";
 
 export function Hero() {
   const [parallaxOffset, setParallaxOffset] = useState(0);
@@ -84,7 +83,6 @@ export function Hero() {
               {["Position your remote-work profile", "Choose payment and business rails", "Prepare authentic documents clearly", "Move forward with a compliant plan"].map((item, index) => <div key={item} className="flex items-center gap-3 rounded-xl border border-white/10 bg-[#102335]/90 p-3.5"><span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-brand-300/15 text-xs font-bold text-brand-200">0{index + 1}</span><span className="text-sm font-medium text-slate-200">{item}</span><Check className="ml-auto h-4 w-4 text-brand-300" /></div>)}
             </div>
             <div className="mt-6 rounded-2xl bg-brand-300 p-5 text-[#081624]"><p className="text-xs font-bold uppercase tracking-[0.16em] text-[#234d43]">One clear next step</p><p className="mt-1 font-display text-xl font-bold">Bring your goal. We will map the route.</p></div>
-            <HeroContactForm />
           </div>
         </div>
       </div>
