@@ -1,0 +1,5 @@
+import { ArrowUpRight } from "lucide-react";
+
+export function SuccessProofSection() {
+  return <section className="border-b border-slate-200 bg-white px-5 py-10 sm:px-8 sm:py-12"><div className="mx-auto flex max-w-7xl flex-col gap-5 lg:flex-row lg:items-center lg:justify-between"><div className="max-w-4xl"><p className="text-xs font-bold uppercase tracking-[0.18em] text-[#14845e]">Trusted progress for Kenyan freelancers</p><p className="mt-3 font-display text-xl font-semibold leading-snug tracking-[-0.02em] text-[#081624] sm:text-2xl">We&apos;ve helped 470+ Kenyan freelancers find remote work, recover payment accounts they had given up on, and move past IP and phone verification bottlenecks.</p><p className="mt-2 text-sm leading-6 text-slate-600">We&apos;ve also helped eBay and Etsy sellers onboard on Payoneer so they can sell and receive payments more smoothly.</p></div><a href="/success-stories" className="inline-flex shrink-0 items-center gap-2 text-sm font-bold text-[#106a4e] transition hover:text-[#081624]">Read success stories <ArrowUpRight className="h-4 w-4" /></a></div></section>;
+}
