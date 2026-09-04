@@ -100,10 +100,10 @@ export const testimonials: Testimonial[] = [
   },
   {
     authorName: "Brian Obunga",
-    country: "Tanzania",
-    service: "USA Receiving Account",
+    country: "Kenya",
+    service: "PayPal Verification Support",
     rating: 5,
-    review: "Finally getting paid by my Upwork clients through a US account. The whole thing was smooth and the guidance was clear.",
+    review: "SwiftVerify helped me verify two PayPal accounts. One had been on hold for more than a year, while the other kept rejecting my business identity document because I was uploading the wrong one. They pointed me to the exact document PayPal requested and made the process clear.",
     source: "TELEGRAM",
   },
   {
