@@ -92,6 +92,7 @@ model PromoTracker {
 model Testimonial {
   id         String   @id @default(cuid())
   authorName String
+  email      String?
   country    String
   service    String
   rating     Int
@@ -111,6 +112,7 @@ model ReviewComment {
   parent    ReviewComment? @relation("CommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
   replies   ReviewComment[] @relation("CommentReplies")
   authorName String
+  email      String?
   body      String
   isActive  Boolean        @default(true)
   createdAt DateTime       @default(now())

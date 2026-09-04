@@ -297,3 +297,35 @@ function renderTemplate(subject: string, body: string, cta?: Cta): string {
   </table>
 </body></html>`;
 }
+
+
+export async function sendNewReviewNotifications(params: {
+  authorName: string;
+  clientEmail?: string;
+  country: string;
+  service: string;
+  rating: number;
+  review: string;
+  reviewId: string;
+}) {
+  const body = `${params.authorName} submitted a new ${params.rating}-star review for ${params.service} from ${params.country}.\n\nReview:\n${params.review}\n\nThe review is live in the Reviews Center.`;
+  await Promise.all([
+    sendEmail({ to: await adminRecipient(), subject: `New live review — ${params.service}`, body, replyTo: params.clientEmail }),
+    params.clientEmail ? sendEmail({ to: params.clientEmail, subject: "Your SwiftVerify review is now live", body: `Hi ${params.authorName},\n\nThank you for sharing your experience with SwiftVerify. Your review is now live for the community to read.\n\n— ${siteConfig.name}`, cta: { label: "View Reviews Center", url: `${BASE_URL}/reviews` } }) : Promise.resolve(),
+  ]);
+}
+
+export async function sendNewReviewCommentNotifications(params: {
+  authorName: string;
+  clientEmail?: string;
+  body: string;
+  reviewAuthorName: string;
+  reviewAuthorEmail?: string;
+  reviewId: string;
+  isReply: boolean;
+}) {
+  const subject = params.isReply ? "New reply on a SwiftVerify review" : "New comment on a SwiftVerify review";
+  const message = `${params.authorName} ${params.isReply ? "replied to" : "commented on"} the review by ${params.reviewAuthorName}.\n\nComment:\n${params.body}\n\nJoin the discussion in the Reviews Center.`;
+  const recipients = new Set([await adminRecipient(), params.reviewAuthorEmail, params.clientEmail].filter((email): email is string => Boolean(email)));
+  await Promise.all(Array.from(recipients).map((to) => sendEmail({ to, subject, body: message, replyTo: params.clientEmail, cta: { label: "Open discussion", url: `${BASE_URL}/reviews#review-${params.reviewId}` } })));
+}
