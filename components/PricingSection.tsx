@@ -1,40 +1,15 @@
-import { ArrowDownRight, ShieldCheck } from "lucide-react";
-import { stripeServices } from "@/lib/pricing";
-import { PricingCard } from "./PricingCard";
+import { ArrowUpRight, BriefcaseBusiness, FileCheck2, Globe2, Laptop2, Phone, ShieldCheck } from "lucide-react";
+import { ConsultationButton } from "./ConsultationModal";
+
+const services = [
+  ["Remote Job & Resume Optimisation", "AI training platform profiles for Outlier, Remotasks, DataAnnotation and Alignerr, plus resume revamps for tech, coding, software development, transcription and virtual assistant roles.", Laptop2],
+  ["Foreign Phone Number Verification Consultation", "Sourcing and configuring dedicated virtual numbers for the USA, UK, Canada, EU and Australia for legitimate verification workflows.", Phone],
+  ["Global Payment Gateway Setup Advisory", "Setup assistance for Stripe, PayPal, Wise, Payoneer, Grey, Mercury Bank, Square and international bank accounts.", Globe2],
+  ["Verification Document Formatting", "Structuring authentic KYC documents, Proof of Address, business documents and business URLs for clear, consistent review.", FileCheck2],
+  ["Proxy, RDP & Location Masking Advisory", "Consultation on masking software and affordable residential proxy packages, payable directly via M-Pesa. Use only within applicable provider rules and law.", ShieldCheck],
+  ["USA & UK LLC Business Formation", "End-to-end consulting for registering US or UK business entities, obtaining EIN/CRN and opening eligible business bank accounts.", BriefcaseBusiness],
+] as const;
 
 export function PricingSection() {
-  return (
-    <section id="services" className="scroll-mt-20 bg-[#f5f7f4] py-24 sm:py-28">
-      <div className="mx-auto max-w-7xl px-5 sm:px-8">
-        <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
-          <div className="max-w-2xl">
-            <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#14845e]">How we can help</p>
-            <h2 className="mt-4 font-display text-4xl font-semibold leading-tight tracking-[-0.04em] text-[#081624] sm:text-5xl">
-              The right route for your payment stack.
-            </h2>
-          </div>
-          <p className="max-w-md text-base leading-7 text-slate-600">
-            Every engagement is scoped individually. Tell us what you are trying to unlock and we will recommend the cleanest, compliant next step.
-          </p>
-        </div>
-
-        <div className="mt-12 grid gap-5 md:grid-cols-2">
-          {stripeServices.map((service, index) => <PricingCard key={service.slug} service={service} featured={index === 0} />)}
-        </div>
-
-        <div className="mt-10 flex flex-col gap-4 rounded-[1.5rem] border border-[#c9ded3] bg-white p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6">
-          <div className="flex items-start gap-3">
-            <ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-[#14845e]" />
-            <div>
-              <p className="font-semibold text-[#081624]">Independent guidance, not a shortcut around provider rules.</p>
-              <p className="mt-1 text-sm leading-6 text-slate-600">We help you present accurate, consistent information and set realistic expectations for each provider&apos;s review.</p>
-            </div>
-          </div>
-          <a href="/documents" className="inline-flex shrink-0 items-center gap-2 text-sm font-bold text-[#106a4e] transition-colors hover:text-[#081624]">
-            See document checklist <ArrowDownRight className="h-4 w-4" />
-          </a>
-        </div>
-      </div>
-    </section>
-  );
+  return <section id="services" className="scroll-mt-20 bg-[#f5f7f4] py-24 sm:py-28"><div className="mx-auto max-w-7xl px-5 sm:px-8"><div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between"><div className="max-w-2xl"><p className="text-xs font-bold uppercase tracking-[0.18em] text-[#14845e]">Advisory services</p><h2 className="mt-4 font-display text-4xl font-semibold leading-tight tracking-[-0.04em] text-[#081624] sm:text-5xl">Practical support for your next global move.</h2></div><p className="max-w-md text-base leading-7 text-slate-600">We help you understand the legitimate path, prepare your own information clearly, and make better-informed decisions before you submit or register.</p></div><div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">{services.map(([title, description, Icon]) => <article key={title} className="group flex flex-col rounded-[1.35rem] border border-slate-200 bg-white p-6 shadow-[0_1px_2px_rgba(8,22,36,0.04)] transition hover:-translate-y-1 hover:border-[#abd4c1] hover:shadow-[0_18px_45px_rgba(8,22,36,0.09)]"><div className="flex items-start justify-between"><div className="grid h-11 w-11 place-items-center rounded-xl bg-[#e9f8f1] text-[#14845e]"><Icon className="h-5 w-5" /></div><ArrowUpRight className="h-4 w-4 text-slate-400 transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5" /></div><h3 className="mt-6 font-display text-xl font-semibold leading-tight text-[#081624]">{title}</h3><p className="mt-3 flex-1 text-sm leading-6 text-slate-600">{description}</p><ConsultationButton action="quote" className="mt-6 inline-flex items-center gap-2 text-sm font-bold text-[#106a4e] hover:text-[#081624]">Discuss this service <ArrowUpRight className="h-4 w-4" /></ConsultationButton></article>)}</div></div></section>;
 }
