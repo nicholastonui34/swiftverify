@@ -1,7 +1,7 @@
 export const siteConfig = {
   name: "SwiftVerify",
   tagline: "Freelance Consulting & Business Advisory Firm in Kenya",
-  description: "Kenya's leading consulting firm for remote freelancers. We assist with US/UK LLC formation, Stripe/PayPal setup, resume revamps, M-Pesa payable residential proxies, and document formatting.",
+  description: "Kenya's leading consulting firm for remote freelancers. We assist with US/UK LLC formation, Stripe/PayPal setup, resume revamps, industry documents, M-Pesa payable residential proxies, and business asset formatting.",
   url: "https://swiftverify-alpha.vercel.app",
   whatsapp: "https://wa.me/447916624874",
   telegram: "https://t.me/swiftverifydotcom",

@@ -4,10 +4,10 @@ import { siteConfig } from "@/lib/config";
 
 export const metadata: Metadata = {
   title: "SwiftVerify | Freelance Advisory, US LLC, Payment Gateways & Remote Work Solutions Kenya",
-  description: "Kenya's leading consulting firm for remote freelancers. We assist with US/UK LLC formation, Stripe/PayPal setup, resume revamps, M-Pesa payable residential proxies, and document formatting.",
+  description: "Kenya's leading consulting firm for remote freelancers. We assist with US/UK LLC formation, Stripe/PayPal setup, resume revamps, industry documents, M-Pesa payable residential proxies, and business asset formatting.",
   metadataBase: new URL(siteConfig.url),
   alternates: { canonical: "/" },
-  keywords: ["freelance consulting Kenya", "remote work solutions Kenya", "US LLC formation Kenya", "UK company formation", "payment gateway setup", "resume optimisation", "verification document formatting"],
+  keywords: ["freelance consulting Kenya", "remote work solutions Kenya", "US LLC formation Kenya", "UK company formation", "payment gateway setup", "resume optimisation", "verification document formatting", "work contract invoice business URL Kenya"],
   openGraph: { title: "SwiftVerify | Freelance Advisory & Business Consulting Kenya", description: siteConfig.description, url: siteConfig.url, siteName: siteConfig.name, locale: "en_KE", type: "website", images: [{ url: "/swiftverify-og.png", width: 1200, height: 630, alt: "SwiftVerify freelance and business advisory" }] },
   twitter: { card: "summary_large_image", title: "SwiftVerify | Freelance Advisory Kenya", description: siteConfig.description, images: ["/swiftverify-og.png"] },
   icons: { icon: "/logo-mark.svg" },

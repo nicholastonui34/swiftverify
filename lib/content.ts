@@ -56,6 +56,13 @@ export const services: Service[] = [
     isPromoEligible: true,
   },
   {
+    slug: "industry-documents-business-assets",
+    name: "Industry Documents & Business Assets",
+    description: "Formatting authentic work contracts, invoices, business URLs, company profiles, quotations and related business assets.",
+    priceKES: 2000,
+    isPromoEligible: true,
+  },
+  {
     slug: "proxy-rdp-location-advisory",
     name: "Proxy, RDP & Location Masking Advisory",
     description: "Consultation on privacy-aware software and residential proxy options.",

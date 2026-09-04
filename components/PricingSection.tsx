@@ -1,4 +1,4 @@
-import { ArrowUpRight, BriefcaseBusiness, FileCheck2, Globe2, Laptop2, Phone, ShieldCheck } from "lucide-react";
+import { ArrowUpRight, BriefcaseBusiness, FileCheck2, FileText, Globe2, Laptop2, Phone, ShieldCheck } from "lucide-react";
 import { ConsultationButton } from "./ConsultationModal";
 
 const services = [
@@ -6,6 +6,7 @@ const services = [
   ["Foreign Phone Number Verification Consultation", "Sourcing and configuring dedicated virtual numbers for the USA, UK, Canada, EU and Australia for legitimate verification workflows.", Phone],
   ["Global Payment Gateway Setup Advisory", "Setup assistance for Stripe, PayPal, Wise, Payoneer, Grey, Mercury Bank, Square and international bank accounts.", Globe2],
   ["Verification Document Formatting", "Structuring authentic KYC documents, Proof of Address, business documents and business URLs for clear, consistent review.", FileCheck2],
+  ["Industry Documents & Business Assets", "Formatting and structuring authentic work contracts, invoices, business URLs, company profiles, quotations, letters and other industry-specific business assets for legitimate onboarding and professional presentation.", FileText],
   ["Proxy, RDP & Location Masking Advisory", "Consultation on masking software and affordable residential proxy packages, payable directly via M-Pesa. Use only within applicable provider rules and law.", ShieldCheck],
   ["USA & UK LLC Business Formation", "End-to-end consulting for registering US or UK business entities, obtaining EIN/CRN and opening eligible business bank accounts.", BriefcaseBusiness],
 ] as const;
