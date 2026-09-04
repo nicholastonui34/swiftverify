@@ -14,7 +14,10 @@ export function ReviewsCenter({ initialReviews = [] }: { initialReviews?: Review
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
-    fetch("/api/reviews", { cache: "no-store" }).then((response) => response.ok ? response.json() : null).then((data) => { if (data) { setReviews(data.reviews); setCount(data.count); } }).catch(() => undefined);
+    const refresh = () => fetch("/api/reviews", { cache: "no-store" }).then((response) => response.ok ? response.json() : null).then((data) => { if (data) { setReviews(data.reviews); setCount(data.count); } }).catch(() => undefined);
+    refresh();
+    const interval = window.setInterval(refresh, 30000);
+    return () => window.clearInterval(interval);
   }, []);
 
   async function submit(event: FormEvent<HTMLFormElement>) {

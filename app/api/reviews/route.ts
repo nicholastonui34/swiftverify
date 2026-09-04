@@ -10,8 +10,11 @@ function clean(value: unknown, max: number) {
 export async function GET() {
   if (!isDbConfigured) return NextResponse.json({ reviews: [], count: 0 });
   try {
-    const reviews = await db.testimonial.findMany({ where: { isActive: true }, orderBy: { createdAt: "desc" }, take: 100, select: { id: true, authorName: true, country: true, service: true, rating: true, review: true, createdAt: true } });
-    return NextResponse.json({ reviews, count: reviews.length }, { headers: { "Cache-Control": "no-store" } });
+    const [reviews, count] = await Promise.all([
+      db.testimonial.findMany({ where: { isActive: true }, orderBy: { createdAt: "desc" }, take: 100, select: { id: true, authorName: true, country: true, service: true, rating: true, review: true, createdAt: true } }),
+      db.testimonial.count({ where: { isActive: true } }),
+    ]);
+    return NextResponse.json({ reviews, count }, { headers: { "Cache-Control": "no-store" } });
   } catch {
     return NextResponse.json({ reviews: [], count: 0, error: "Reviews are temporarily unavailable." }, { status: 503 });
   }
