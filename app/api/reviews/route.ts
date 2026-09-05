@@ -37,8 +37,18 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Please complete every field and select a rating from 1 to 5." }, { status: 400 });
     }
     if (!isDbConfigured) return NextResponse.json({ error: "Reviews are temporarily unavailable. Please contact us on WhatsApp instead." }, { status: 503 });
-    const created = await db.testimonial.create({ data: { authorName, email, country, service, rating, review: `${review}\n\n[Would recommend: ${recommendation}]`, source: "REVIEWS_CENTER", isActive: true } });
-    await sendNewReviewNotifications({ authorName, clientEmail: email, country, service, rating, review, reviewId: created.id });
+    let created;
+    try {
+      created = await db.testimonial.create({ data: { authorName, email, country, service, rating, review: `${review}\n\n[Would recommend: ${recommendation}]`, source: "REVIEWS_CENTER", isActive: true } });
+    } catch (error) {
+      // Keep publishing available while an older production database finishes
+      // applying the additive email-column migration.
+      console.error("[reviews] email column unavailable; saving without client email", error);
+      created = await db.testimonial.create({ data: { authorName, country, service, rating, review: `${review}\n\n[Would recommend: ${recommendation}]`, source: "REVIEWS_CENTER", isActive: true } });
+    }
+    void sendNewReviewNotifications({ authorName, clientEmail: email, country, service, rating, review, reviewId: created.id }).catch((error) => {
+      console.error("[reviews] notification failed after review was published", error);
+    });
     return NextResponse.json({ message: "Thank you. Your review is now live." }, { status: 201 });
   } catch {
     return NextResponse.json({ error: "We could not submit your review. Please try again." }, { status: 500 });
